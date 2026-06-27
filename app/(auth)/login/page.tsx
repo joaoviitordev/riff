@@ -5,15 +5,15 @@ import Logo from "@/components/logo";
 export default function LoginPage() {
   return (
     <div className="flex flex-col flex-1 items-center justify-center min-h-screen bg-background text-foreground p-6">
-      <div className="w-full max-w-sm space-y-6 flex flex-col items-center">
+      <div className="w-full max-w-[430px] flex flex-col items-center gap-6">
         <Logo />
         <div className="flex items-center justify-center">
           <p className="text-riff-gray text-center text-xl">
             Conecte sua conta do Spotify
           </p>
         </div>
-        <main className="w-full space-y-4">
-          <Button className="w-full bg-riff-spotify hover:bg-[#1ed760] text-white font-semibold py-6 rounded-full flex items-center justify-center gap-2 text-base transition-colors cursor-pointer">
+        <main className="w-full flex flex-col gap-4">
+          <Button className="w-full bg-riff-spotify hover:bg-[#1ed760] text-white font-semibold py-6 rounded-full flex items-center justify-center gap-2 text-xl transition-colors cursor-pointer">
             <svg
               className="w-5 h-5 fill-current"
               viewBox="0 0 24 24"
@@ -27,7 +27,7 @@ export default function LoginPage() {
           <Link href="/" className="block w-full">
             <Button
               variant="outline"
-              className="w-full border-border bg-transparent hover:bg-muted text-white py-6 rounded-full flex items-center justify-center gap-2 text-base transition-colors cursor-pointer"
+              className="w-full border-border bg-transparent hover:bg-muted text-white py-6 rounded-full flex items-center justify-center gap-2 text-xl transition-colors cursor-pointer"
             >
               Voltar ao Início
             </Button>
