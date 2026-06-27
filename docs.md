@@ -16,16 +16,16 @@ Uma plataforma onde o usuário conecta sua conta do Spotify e ganha um perfil so
 
 ### Features do MVP
 
-| Feature | Descrição | Prioridade |
-|---|---|---|
-| Login com Spotify | OAuth via Spotify, sem senha própria | 🔴 Essencial |
-| Onboarding de username | Escolha do `@handle` na primeira entrada | 🔴 Essencial |
-| Perfil público `/[username]` | Bio, foto, banner | 🔴 Essencial |
-| Now Playing ao vivo | Música atual visível no perfil | 🔴 Essencial |
-| Top artistas e músicas | Short / medium / long term | 🔴 Essencial |
-| Seguir usuários | Follow/unfollow + contagem | 🟡 Importante |
-| Ver perfil de outros | Now playing de quem você segue | 🟡 Importante |
-| Upload de avatar e banner | Supabase Storage | 🟡 Importante |
+| Feature                      | Descrição                                | Prioridade    |
+| ---------------------------- | ---------------------------------------- | ------------- |
+| Login com Spotify            | OAuth via Spotify, sem senha própria     | 🔴 Essencial  |
+| Onboarding de username       | Escolha do `@handle` na primeira entrada | 🔴 Essencial  |
+| Perfil público `/[username]` | Bio, foto, banner                        | 🔴 Essencial  |
+| Now Playing ao vivo          | Música atual visível no perfil           | 🔴 Essencial  |
+| Top artistas e músicas       | Short / medium / long term               | 🔴 Essencial  |
+| Seguir usuários              | Follow/unfollow + contagem               | 🟡 Importante |
+| Ver perfil de outros         | Now playing de quem você segue           | 🟡 Importante |
+| Upload de avatar e banner    | Supabase Storage                         | 🟡 Importante |
 
 ### Decisões de produto
 
@@ -36,6 +36,7 @@ Uma plataforma onde o usuário conecta sua conta do Spotify e ganha um perfil so
 **Limite da Spotify API:** no modo desenvolvimento, até 25 usuários. Para portfólio isso é mais que suficiente. Para escalar, é necessário solicitar quota extension na Spotify for Developers.
 
 ---
+
 ## Fluxos Principais
 
 ### Autenticação e Onboarding
@@ -53,33 +54,37 @@ Primeira vez? → redireciona para /onboarding
         ↓
 Usuário escolhe @username
         ↓
-Conta criada → redireciona para /dashboard
+Conta criada → redireciona para /
 ```
 
-
 ---
+
 ## Ordem de Implementação
 
 ### Fase 1 — Base
+
 - [ ] Setup Next.js + TypeScript + Tailwind + shadcn/ui
 - [ ] Configurar Supabase (banco + storage)
-- [ ] Configurar Prisma e rodar migrations
+- [ ] Configurar Drizzle e rodar migrations
 - [ ] NextAuth com provider Spotify
 - [ ] Página de onboarding (escolha do @username)
 - [ ] Página de perfil estática `/[username]`
 
-### Fase 2 — Spotify Data 
+### Fase 2 — Spotify Data
+
 - [ ] Wrapper da Spotify API com refresh de token
 - [ ] API routes para top tracks e top artists
-- [ ] Componentes de métricas no dashboard
+- [ ] Componentes de métricas no profile
 - [ ] Now Playing — polling + escrita no banco
 
-### Fase 3 — Social 
+### Fase 3 — Social
+
 - [ ] Sistema de follows (follow/unfollow + contagem)
 - [ ] Now Playing ao vivo com Supabase Realtime
 - [ ] Ver perfil de outros usuários autenticado
 
-### Fase 4 — Polish 
+### Fase 4 — Polish
+
 - [ ] Upload de avatar e banner (Supabase Storage)
 - [ ] Estados de loading e empty states bem feitos
 - [ ] SEO e meta tags dinâmicas no perfil (`/[username]`)
@@ -87,10 +92,11 @@ Conta criada → redireciona para /dashboard
 - [ ] Deploy na Vercel com domínio próprio
 
 ---
+
 ## Referências
 
 - [Spotify for Developers](https://developer.spotify.com)
 - [Spotify Web API Docs](https://developer.spotify.com/documentation/web-api)
 - [NextAuth v5 Docs](https://authjs.dev)
 - [Supabase Realtime Docs](https://supabase.com/docs/guides/realtime)
-- [Prisma Docs](https://www.prisma.io/docs)
+- [Drizzle ORM Docs](https://orm.drizzle.team)

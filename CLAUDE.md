@@ -21,6 +21,7 @@ Você é um engenheiro de software sênior especializado em desenvolvimento web 
 **Objetivo:** O Riff é uma rede social musical que conecta usuários através do Spotify. O usuário cria um perfil com `@username` próprio, vincula sua conta do Spotify e passa a ter uma página pública onde outros podem ver o que ele está ouvindo em tempo real, suas músicas e artistas mais ouvidos por período — sem esperar o Wrapped anual. O diferencial é a camada social: seguir pessoas, ver o que amigos ouvem ao vivo e descobrir músicas pelo gosto real de quem você conhece.
 
 **Personas alvo (relevantes para UX):**
+
 - A-001 **Ouvinte casual** — usa Spotify no dia-a-dia, quer ver suas próprias estatísticas de forma visual e acessível. Fluência digital média. Acessa principalmente pelo celular.
 - A-002 **Fã de música** — quer compartilhar o que está ouvindo, descobrir músicas pelo gosto de amigos. Alta fluência digital. Usa web e mobile.
 - A-003 **Usuário social ativo (persona crítica)** — acessa com frequência para ver o que pessoas que segue estão ouvindo agora. Consome o "ouvindo agora" como feed. Exige que o tempo real funcione de forma confiável.
@@ -30,6 +31,7 @@ Você é um engenheiro de software sênior especializado em desenvolvimento web 
 **MVP:** 5 módulos primários + 2 transversais mínimos. Escopo: **multi-user, single-tenant** (não há organizações ou workspaces — cada usuário é sua própria identidade).
 
 **Módulos primários:**
+
 1. Auth + Onboarding (conexão com Spotify, escolha de `@username`)
 2. Perfil público (`/[username]`)
 3. Ouvindo agora (now playing ao vivo via Supabase Realtime)
@@ -37,33 +39,35 @@ Você é um engenheiro de software sênior especializado em desenvolvimento web 
 5. Social (seguir/deixar de seguir + contagem)
 
 **Módulos transversais mínimos:**
+
 - Upload de imagem (avatar e banner via Supabase Storage)
 - Refresh automático de token do Spotify
 
 **Documentos fonte de verdade (consulte sempre antes de modelar):**
+
 - `spotify-social-planejamento.md` — visão geral, features, fluxos, decisões de produto, schema do banco, endpoints da Spotify API e ordem de implementação.
 
 ---
 
 ## Stack do Projeto
 
-| Categoria      | Tecnologia                                        |
-|----------------|---------------------------------------------------|
-| Framework      | Next.js 16+ (App Router)                          |
-| UI             | React 19, Tailwind CSS, shadcn/ui, recharts       |
-| Linguagem      | TypeScript (obrigatório)                          |
-| Server Actions | Next Safe Action                                  |
-| Formulários    | React Hook Form + Zod                             |
-| Data/Hora      | dayjs                                             |
-| Notificações   | react-hot-toast                                   |
-| Ícones         | @tabler/icons-react                               |
-| Data Fetching  | TanStack Query (@tanstack/react-query)            |
-| ORM            | Prisma ORM                                        |
-| Banco          | PostgreSQL via Supabase                           |
-| Storage        | Supabase Storage                                  |
-| Realtime       | Supabase Realtime                                 |
-| Auth           | NextAuth v5 (provider: Spotify OAuth)             |
-| Deploy         | Vercel                                            |
+| Categoria      | Tecnologia                                  |
+| -------------- | ------------------------------------------- |
+| Framework      | Next.js 16+ (App Router)                    |
+| UI             | React 19, Tailwind CSS, shadcn/ui, recharts |
+| Linguagem      | TypeScript (obrigatório)                    |
+| Server Actions | Next Safe Action                            |
+| Formulários    | React Hook Form + Zod                       |
+| Data/Hora      | dayjs                                       |
+| Notificações   | react-hot-toast                             |
+| Ícones         | @tabler/icons-react                         |
+| Data Fetching  | TanStack Query (@tanstack/react-query)      |
+| ORM            | Drizzle ORM                                 |
+| Banco          | PostgreSQL via Supabase                     |
+| Storage        | Supabase Storage                            |
+| Realtime       | Supabase Realtime                           |
+| Auth           | NextAuth v5 (provider: Spotify OAuth)       |
+| Deploy         | Vercel                                      |
 
 > **Web vs Mobile nativo:** app mobile é projeto separado (pós-MVP). Todas as telas web devem funcionar bem em celular — o perfil público é a tela mais acessada via mobile por visitantes.
 
@@ -89,25 +93,25 @@ Você é um engenheiro de software sênior especializado em desenvolvimento web 
 
 > Linguagem do usuário, não do software. Mensagens, labels, erros e botões usam estes termos.
 
-| Termo correto (UI)             | Evitar (código interno ok, UI não) |
-|-------------------------------|-------------------------------------|
-| Ouvindo agora                 | Now Playing, currently playing      |
-| Música                        | Track, faixa (em labels)            |
-| Artista                       | Artist                              |
-| Suas músicas mais ouvidas     | Top tracks                          |
-| Seus artistas favoritos       | Top artists                         |
-| Último mês                    | short_term                          |
-| Últimos 6 meses               | medium_term                         |
-| Todo o tempo                  | long_term                           |
-| @nome de usuário              | username, handle                    |
-| Seguir / Deixar de seguir     | Follow / Unfollow                   |
-| Seguidores                    | Followers                           |
-| Seguindo                      | Following                           |
-| Conectar com Spotify          | OAuth, autenticar                   |
-| Foto de perfil                | Avatar, profile picture             |
-| Capa                          | Banner, header image                |
-| Última vez ouvida             | Last played                         |
-| Offline / Sem atividade       | isPlaying: false                    |
+| Termo correto (UI)        | Evitar (código interno ok, UI não) |
+| ------------------------- | ---------------------------------- |
+| Ouvindo agora             | Now Playing, currently playing     |
+| Música                    | Track, faixa (em labels)           |
+| Artista                   | Artist                             |
+| Suas músicas mais ouvidas | Top tracks                         |
+| Seus artistas favoritos   | Top artists                        |
+| Último mês                | short_term                         |
+| Últimos 6 meses           | medium_term                        |
+| Todo o tempo              | long_term                          |
+| @nome de usuário          | username, handle                   |
+| Seguir / Deixar de seguir | Follow / Unfollow                  |
+| Seguidores                | Followers                          |
+| Seguindo                  | Following                          |
+| Conectar com Spotify      | OAuth, autenticar                  |
+| Foto de perfil            | Avatar, profile picture            |
+| Capa                      | Banner, header image               |
+| Última vez ouvida         | Last played                        |
+| Offline / Sem atividade   | isPlaying: false                   |
 
 ### Termos PROIBIDOS na UI
 
@@ -171,7 +175,7 @@ src/
 │   ├── (app)/
 │   │   ├── onboarding/
 │   │   │   └── page.tsx              ← escolha do @username (P0)
-│   │   ├── dashboard/
+│   │   ├── profile/
 │   │   │   └── page.tsx              ← métricas do próprio usuário (P3)
 │   │   ├── configuracoes/
 │   │   │   └── page.tsx              ← editar bio, foto, banner
@@ -203,7 +207,8 @@ src/
 │       └── onboarding/
 │           └── input-username.tsx        ← validação de disponibilidade em tempo real
 ├── db/
-│   └── schema.prisma                 ← schema único do Prisma
+│   ├── index.ts                      ← inicialização do Drizzle
+│   └── schema.ts                     ← esquema de tabelas e relações
 ├── hooks/
 │   ├── queries/
 │   │   ├── use-perfil.ts
@@ -219,7 +224,7 @@ src/
 └── lib/
     ├── auth.ts                       ← config do NextAuth v5
     ├── spotify.ts                    ← wrapper Spotify API + refresh token
-    ├── prisma.ts                     ← client singleton
+    ├── db.ts                         ← re-exporta db do /db ou remove
     ├── supabase.ts                   ← client Supabase (server + client)
     ├── safe-action.ts                ← config do next-safe-action
     └── format/
@@ -228,73 +233,88 @@ src/
 
 ---
 
-## Schema do Banco (Prisma)
+## Schema do Banco (Drizzle)
 
-Toda model de domínio tem:
-- `id String @id @default(cuid())`
-- `deletedAt DateTime?` — soft delete (P-007)
-- `createdAt DateTime @default(now())`
-- `updatedAt DateTime @updatedAt`
+Toda tabela de domínio tem:
 
-```prisma
-generator client {
-  provider = "prisma-client-js"
-}
+- `id: text` (UUID gerado no runtime)
+- `deletedAt: timestamp` (soft delete)
+- `createdAt: timestamp` (padrão NOW)
+- `updatedAt: timestamp` (atualizado no hook de update)
 
-datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
-}
+```typescript
+// db/schema.ts
+import { pgTable, text, timestamp, boolean, primaryKey } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
 
-model User {
-  id        String    @id @default(cuid())
-  username  String    @unique
-  email     String?   @unique
-  name      String?
-  bio       String?
-  avatarUrl String?
-  bannerUrl String?
+export const users = pgTable("users", {
+  id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+  username: text("username").notNull().unique(),
+  email: text("email").unique(),
+  name: text("name"),
+  bio: text("bio"),
+  avatarUrl: text("avatar_url"),
+  bannerUrl: text("banner_url"),
 
-  spotifyId      String   @unique
-  accessToken    String
-  refreshToken   String
-  tokenExpiresAt DateTime
+  spotifyId: text("spotify_id").notNull().unique(),
+  accessToken: text("access_token").notNull(),
+  refreshToken: text("refresh_token").notNull(),
+  tokenExpiresAt: timestamp("token_expires_at").notNull(),
 
-  deletedAt DateTime?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  deletedAt: timestamp("deleted_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull().$onUpdate(() => new Date()),
+});
 
-  following  Follow[]   @relation("follower")
-  followers  Follow[]   @relation("following")
-  nowPlaying NowPlaying?
-}
+export const follows = pgTable("follows", {
+  followerId: text("follower_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  followingId: text("following_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+}, (table) => [
+  primaryKey({ columns: [table.followerId, table.followingId] })
+]);
 
-model Follow {
-  followerId  String
-  followingId String
-  createdAt   DateTime @default(now())
+export const nowPlaying = pgTable("now_playing", {
+  userId: text("user_id").primaryKey().references(() => users.id, { onDelete: "cascade" }),
+  trackId: text("track_id"),
+  trackName: text("track_name"),
+  artist: text("artist"),
+  albumArt: text("album_art"),
+  isPlaying: boolean("is_playing").default(false).notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull().$onUpdate(() => new Date()),
+});
 
-  follower  User @relation("follower",  fields: [followerId],  references: [id])
-  following User @relation("following", fields: [followingId], references: [id])
+export const usersRelations = relations(users, ({ many, one }) => ({
+  following: many(follows, { relationName: "follower" }),
+  followers: many(follows, { relationName: "following" }),
+  nowPlaying: one(nowPlaying, {
+    fields: [users.id],
+    references: [nowPlaying.userId],
+  }),
+}));
 
-  @@id([followerId, followingId])
-}
+export const followsRelations = relations(follows, ({ one }) => ({
+  follower: one(users, {
+    fields: [follows.followerId],
+    references: [users.id],
+    relationName: "follower",
+  }),
+  following: one(users, {
+    fields: [follows.followingId],
+    references: [users.id],
+    relationName: "following",
+  }),
+}));
 
-model NowPlaying {
-  userId    String   @id
-  trackId   String?
-  trackName String?
-  artist    String?
-  albumArt  String?
-  isPlaying Boolean  @default(false)
-  updatedAt DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id])
-}
+export const nowPlayingRelations = relations(nowPlaying, ({ one }) => ({
+  user: one(users, {
+    fields: [nowPlaying.userId],
+    references: [users.id],
+  }),
+}));
 ```
 
-**Soft delete:** NUNCA use `prisma.user.delete()`. Use sempre `prisma.user.update({ data: { deletedAt: new Date() } })`. Toda query de listagem deve incluir `where: { deletedAt: null }`.
+**Soft delete:** NUNCA delete registros do banco. Use sempre soft delete atualizando o campo `deletedAt` com a data atual. Toda query de listagem deve incluir a cláusula `isNull(users.deletedAt)` nas condições.
 
 ---
 
@@ -303,12 +323,13 @@ model NowPlaying {
 **Localização:** `src/actions/[modulo]/nome-da-acao.action.ts`
 
 **Regras:**
+
 - SEMPRE `"use server"` no topo
 - Schema Zod no mesmo arquivo da action
 - SEMPRE valide regras de negócio no backend (P-005)
 - NUNCA try/catch genérico — deixe `next-safe-action` tratar
 - Tokens do Spotify NUNCA passados pelo client — buscar sempre do banco via `userId` da sessão
-- Operações com cascata (ex.: follow) devem usar `prisma.$transaction()`
+- Operações com cascata (ex.: follow) devem ser feitas em transação se houver múltiplos updates independentes, usando `db.transaction()`
 - Mensagens de erro em linguagem do domínio: "Esse @nome já está em uso", não "Unique constraint failed"
 
 **Exemplo — seguir usuário:**
@@ -318,10 +339,11 @@ model NowPlaying {
 
 import { z } from "zod";
 import { authActionClient } from "@/lib/safe-action";
-import { prisma } from "@/lib/prisma";
+import { db } from "@/db";
+import { follows } from "@/db/schema";
 
 const seguirSchema = z.object({
-  usuarioId: z.string().cuid(),
+  usuarioId: z.string().uuid(),
 });
 
 export const seguirUsuario = authActionClient
@@ -334,11 +356,9 @@ export const seguirUsuario = authActionClient
       throw new Error("Você não pode seguir a si mesmo.");
     }
 
-    await prisma.follow.create({
-      data: {
-        followerId: seguidorId,
-        followingId: usuarioId,
-      },
+    await db.insert(follows).values({
+      followerId: seguidorId,
+      followingId: usuarioId,
     });
   });
 ```
@@ -349,14 +369,14 @@ export const seguirUsuario = authActionClient
 
 **Endpoints utilizados:**
 
-| Endpoint | Retorna | Uso |
-|---|---|---|
-| `GET /me` | Dados do usuário | Onboarding, avatar padrão |
-| `GET /me/player/currently-playing` | Música atual | Now Playing |
-| `GET /me/top/tracks?time_range=short_term` | Top músicas (4 semanas) | Métricas |
-| `GET /me/top/tracks?time_range=medium_term` | Top músicas (6 meses) | Métricas |
-| `GET /me/top/tracks?time_range=long_term` | Top músicas (todo tempo) | Métricas |
-| `GET /me/top/artists?time_range=...` | Top artistas | Métricas |
+| Endpoint                                    | Retorna                  | Uso                       |
+| ------------------------------------------- | ------------------------ | ------------------------- |
+| `GET /me`                                   | Dados do usuário         | Onboarding, avatar padrão |
+| `GET /me/player/currently-playing`          | Música atual             | Now Playing               |
+| `GET /me/top/tracks?time_range=short_term`  | Top músicas (4 semanas)  | Métricas                  |
+| `GET /me/top/tracks?time_range=medium_term` | Top músicas (6 meses)    | Métricas                  |
+| `GET /me/top/tracks?time_range=long_term`   | Top músicas (todo tempo) | Métricas                  |
+| `GET /me/top/artists?time_range=...`        | Top artistas             | Métricas                  |
 
 **Scopes OAuth necessários:**
 
@@ -374,8 +394,13 @@ O `accessToken` do Spotify expira em 60 minutos. ANTES de qualquer chamada à Sp
 
 ```typescript
 // lib/spotify.ts
+import { db } from "@/db";
+import { users } from "@/db/schema";
+import { eq } from "drizzle-orm";
+
 export async function getAccessTokenValido(userId: string): Promise<string> {
-  const user = await prisma.user.findUniqueOrThrow({ where: { id: userId } });
+  const [user] = await db.select().from(users).where(eq(users.id, userId)).limit(1);
+  if (!user) throw new Error("Usuário não encontrado.");
 
   const expirado = new Date() >= new Date(user.tokenExpiresAt);
   if (!expirado) return user.accessToken;
@@ -393,13 +418,12 @@ export async function getAccessTokenValido(userId: string): Promise<string> {
 
   const dados = await resposta.json();
 
-  await prisma.user.update({
-    where: { id: userId },
-    data: {
+  await db.update(users)
+    .set({
       accessToken: dados.access_token,
       tokenExpiresAt: new Date(Date.now() + dados.expires_in * 1000),
-    },
-  });
+    })
+    .where(eq(users.id, userId));
 
   return dados.access_token;
 }
@@ -439,8 +463,13 @@ export function useNowPlayingRealtime(userId: string) {
       .channel(`now-playing:${userId}`)
       .on(
         "postgres_changes",
-        { event: "UPDATE", schema: "public", table: "NowPlaying", filter: `userId=eq.${userId}` },
-        (payload) => setNowPlaying(payload.new as NowPlaying)
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "NowPlaying",
+          filter: `userId=eq.${userId}`,
+        },
+        (payload) => setNowPlaying(payload.new as NowPlaying),
       )
       .subscribe();
 
@@ -462,11 +491,11 @@ export function useNowPlayingRealtime(userId: string) {
 
 **Estados possíveis na UI:**
 
-| Estado | Condição | Display |
-|---|---|---|
-| Ouvindo agora | `isPlaying: true` | Nome da música + artista + capa animada |
-| Pausado | `isPlaying: false` + `trackName` preenchido | "Última música ouvida: X" + timestamp |
-| Offline | `isPlaying: false` + sem trackName | "Sem atividade recente" |
+| Estado        | Condição                                    | Display                                 |
+| ------------- | ------------------------------------------- | --------------------------------------- |
+| Ouvindo agora | `isPlaying: true`                           | Nome da música + artista + capa animada |
+| Pausado       | `isPlaying: false` + `trackName` preenchido | "Última música ouvida: X" + timestamp   |
+| Offline       | `isPlaying: false` + sem trackName          | "Sem atividade recente"                 |
 
 ---
 
@@ -516,12 +545,16 @@ import { z } from "zod";
 import { authActionClient } from "@/lib/safe-action";
 
 const salvarPerfilSchema = z.object({
-  bio:       z.string().max(160, "A bio pode ter no máximo 160 caracteres.").optional(),
-  nome:      z.string().min(1, "O nome não pode ficar vazio.").max(50),
-  username:  z.string()
-               .min(3, "O @nome precisa ter pelo menos 3 caracteres.")
-               .max(30)
-               .regex(/^[a-z0-9_]+$/, "Só letras minúsculas, números e _"),
+  bio: z
+    .string()
+    .max(160, "A bio pode ter no máximo 160 caracteres.")
+    .optional(),
+  nome: z.string().min(1, "O nome não pode ficar vazio.").max(50),
+  username: z
+    .string()
+    .min(3, "O @nome precisa ter pelo menos 3 caracteres.")
+    .max(30)
+    .regex(/^[a-z0-9_]+$/, "Só letras minúsculas, números e _"),
 });
 
 export const salvarPerfil = authActionClient
@@ -547,7 +580,8 @@ export const TOP_MUSICAS_KEY = (periodo: string) => ["top-musicas", periodo];
 export function useTopMusicas(periodo: string) {
   return useQuery({
     queryKey: TOP_MUSICAS_KEY(periodo),
-    queryFn: () => fetch(`/api/spotify/top-tracks?periodo=${periodo}`).then(r => r.json()),
+    queryFn: () =>
+      fetch(`/api/spotify/top-tracks?periodo=${periodo}`).then((r) => r.json()),
   });
 }
 ```
@@ -569,18 +603,18 @@ queryClient.invalidateQueries({ queryKey: ["perfil", meuUsername] });
 **Exemplos no Riff:**
 
 ```
-/dashboard?periodo=ultimos-6-meses        ← seletor de período das métricas
-/dashboard?aba=musicas                    ← aba ativa (músicas | artistas)
+/profile?periodo=ultimos-6-meses        ← seletor de período das métricas
+/profile?aba=musicas                    ← aba ativa (músicas | artistas)
 /[username]?origem=feed                   ← rastrear origem de acesso
 ```
 
 **Período das métricas — valores canônicos:**
 
-| Label na UI        | Query param value  | Spotify time_range |
-|--------------------|--------------------|--------------------|
-| Último mês         | `ultimo-mes`       | `short_term`       |
-| Últimos 6 meses    | `ultimos-6-meses`  | `medium_term`      |
-| Todo o tempo       | `todo-tempo`       | `long_term`        |
+| Label na UI     | Query param value | Spotify time_range |
+| --------------- | ----------------- | ------------------ |
+| Último mês      | `ultimo-mes`      | `short_term`       |
+| Últimos 6 meses | `ultimos-6-meses` | `medium_term`      |
+| Todo o tempo    | `todo-tempo`      | `long_term`        |
 
 ---
 
@@ -604,37 +638,41 @@ toast.error("Não conseguimos conectar com o Spotify. Tente novamente.");
 **Exemplos proibidos:**
 
 ```typescript
-toast.error("Unique constraint violation");       // código, não domínio
-toast.error("Request failed with status 401");    // técnico
-toast.success("Record updated successfully");     // software, não produto
+toast.error("Unique constraint violation"); // código, não domínio
+toast.error("Request failed with status 401"); // técnico
+toast.success("Record updated successfully"); // software, não produto
 ```
 
 ---
 
-## Prisma
+## Drizzle ORM
 
-- SEMPRE use `prisma migrate dev` para criar migrations em desenvolvimento.
-- SEMPRE use `prisma migrate deploy` em produção (nunca `db push` em prod).
-- Soft delete via coluna `deletedAt`. NUNCA usar `prisma.[model].delete()` diretamente.
-- Toda query de listagem pública DEVE incluir `where: { deletedAt: null }`.
-- Tokens do Spotify (`accessToken`, `refreshToken`) ficam no banco mas NUNCA são retornados para o client — filtrar nos selects.
-- `prisma.ts` exporta um singleton: `export const prisma = new PrismaClient()`.
+- SEMPRE use `npm run db:generate` para criar migrações a partir do esquema.
+- SEMPRE use `npm run db:migrate` para aplicar as migrações no banco de dados.
+- Abra o console visual do banco com `npm run db:studio`.
+- Soft delete via coluna `deletedAt`. NUNCA use exclusão física diretamente.
+- Toda query de listagem pública DEVE incluir `isNull(users.deletedAt)` nas condições de filtro.
+- Tokens do Spotify (`accessToken`, `refreshToken`) ficam no banco mas NUNCA devem ser retornados para o client — faça a seleção explícita sem incluir esses campos.
 
 **Select seguro de User (sem tokens):**
 
 ```typescript
-const userPublico = await prisma.user.findUnique({
-  where: { username },
-  select: {
-    id: true,
-    username: true,
-    name: true,
-    bio: true,
-    avatarUrl: true,
-    bannerUrl: true,
-    _count: { select: { followers: true, following: true } },
-  },
-});
+import { db } from "@/db";
+import { users } from "@/db/schema";
+import { eq, and, isNull } from "drizzle-orm";
+
+const [userPublico] = await db
+  .select({
+    id: users.id,
+    username: users.username,
+    name: users.name,
+    bio: users.bio,
+    avatarUrl: users.avatarUrl,
+    bannerUrl: users.bannerUrl,
+  })
+  .from(users)
+  .where(and(eq(users.username, username), isNull(users.deletedAt)))
+  .limit(1);
 ```
 
 ---
@@ -678,13 +716,13 @@ SUPABASE_SERVICE_ROLE_KEY=
 - Soft delete por padrão — campo `deletedAt`.
 - Perfil público (`/[username]`): dados de visitantes anônimos são read-only, sem autenticação necessária, mas sem exposição de tokens.
 - Rate limiting em `/api/now-playing/[username]` para evitar abuso de polling externo.
-- Limite da Spotify API Developer Mode: até 25 usuários. Para portfólio, suficiente. Para escalar, solicitar quota extension em [Spotify for Developers](https://developer.spotify.com/dashboard).
+- Limite da Spotify API Developer Mode: até 25 usuários. Para portfólio, suficiente. Para escalar, solicitar quota extension em [Spotify for Developers](https://developer.spotify.com/profile).
 
 ---
 
 ## Pendências críticas
 
-- **Pend-1** Nome final do projeto — "Riff" é o nome atual de trabalho. Confirmar antes de registrar domínio ou criar app no Spotify Developer Dashboard.
+- **Pend-1** Nome final do projeto — "Riff" é o nome atual de trabalho. Confirmar antes de registrar domínio ou criar app no Spotify Developer profile.
 - **Pend-2** App mobile — React Native (projeto separado) ou PWA (extensão do projeto web)? Decisão afeta estrutura de rotas e escolha de componentes mobile-first.
 - **Pend-3** Feed de atividade — pós-MVP, mas a modelagem do banco pode precisar de uma tabela `Activity` desde o início para evitar migration complexa depois. Avaliar antes da Fase 3.
 - **Pend-4** Histórico de músicas — a Spotify API retorna no máximo 50 músicas recentes. Para construir histórico real (como o Wrapped), será necessário um cron job que persiste o histórico periodicamente. Não está no MVP, mas é uma decisão de arquitetura que impacta o banco.
