@@ -84,11 +84,12 @@ export default async function UserProfilePage({ params, searchParams }: PageProp
 
         {/* Abas de Navegação (P-006: Estado refletido na URL) */}
         <section className="flex flex-col gap-6" aria-label="Estatísticas musicais">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border pb-4 w-full">
-            <div className="flex">
+          <div className="flex flex-col gap-4 w-full">
+            {/* Linha das Abas */}
+            <div className="flex border-b border-border w-full">
               <Link
                 href={`/${userPublico.username}?aba=musicas&periodo=${periodoAtivo}`}
-                className={`pb-4 px-6 text-lg font-semibold border-b-2 transition-all cursor-pointer mb-[-18px] ${
+                className={`pb-3 px-6 text-lg font-semibold border-b-2 transition-all cursor-pointer mb-[-2px] ${
                   abaAtiva === "musicas"
                     ? "border-riff-orange text-white"
                     : "border-transparent text-riff-gray hover:text-white"
@@ -98,7 +99,7 @@ export default async function UserProfilePage({ params, searchParams }: PageProp
               </Link>
               <Link
                 href={`/${userPublico.username}?aba=artistas&periodo=${periodoAtivo}`}
-                className={`pb-4 px-6 text-lg font-semibold border-b-2 transition-all cursor-pointer mb-[-18px] ${
+                className={`pb-3 px-6 text-lg font-semibold border-b-2 transition-all cursor-pointer mb-[-2px] ${
                   abaAtiva === "artistas"
                     ? "border-riff-orange text-white"
                     : "border-transparent text-riff-gray hover:text-white"
@@ -107,7 +108,11 @@ export default async function UserProfilePage({ params, searchParams }: PageProp
                 Artistas
               </Link>
             </div>
-            <SeletorPeriodo />
+
+            {/* Seletor de Período */}
+            <div className="flex justify-start items-center">
+              <SeletorPeriodo />
+            </div>
           </div>
 
           {/* Conteúdo da Aba Ativa */}
