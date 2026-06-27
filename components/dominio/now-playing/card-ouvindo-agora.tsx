@@ -1,6 +1,6 @@
 "use client";
 
-import { useNowPlaying } from "@/hooks/queries/use-now-playing";
+import { useNowPlayingRealtime } from "@/hooks/use-now-playing-realtime";
 import { IconMusic } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -11,10 +11,11 @@ dayjs.locale("pt-br");
 
 interface CardOuvindoAgoraProps {
   username: string;
+  userId: string;
 }
 
-export default function CardOuvindoAgora({ username }: CardOuvindoAgoraProps) {
-  const { data: np, isLoading, error } = useNowPlaying(username);
+export default function CardOuvindoAgora({ username, userId }: CardOuvindoAgoraProps) {
+  const { data: np, isLoading } = useNowPlayingRealtime(username, userId);
 
   // 1. Estado de Carregamento (Loading Skeleton)
   if (isLoading) {
@@ -34,7 +35,7 @@ export default function CardOuvindoAgora({ username }: CardOuvindoAgoraProps) {
   }
 
   // 2. Estado de Erro ou Sem Atividade Recente (Offline)
-  if (error || !np || (!np.isPlaying && !np.trackName)) {
+  if (!np || (!np.isPlaying && !np.trackName)) {
     return (
       <div className="w-full bg-[#1B1B1B] border border-border rounded-2xl p-6 flex items-center justify-between shadow-lg">
         <div className="flex items-center gap-4">

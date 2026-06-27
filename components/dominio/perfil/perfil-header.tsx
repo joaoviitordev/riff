@@ -3,6 +3,7 @@
 import { IconEdit, IconUserPlus } from "@tabler/icons-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import BotaoSeguir from "./botao-seguir";
 
 interface UserPublicInfo {
   id: string;
@@ -11,14 +12,23 @@ interface UserPublicInfo {
   bio: string | null;
   avatarUrl: string | null;
   bannerUrl: string | null;
+  followersCount: number;
+  followingCount: number;
 }
 
 interface PerfilHeaderProps {
   user: UserPublicInfo;
   isOwnProfile: boolean;
+  initialIsFollowing: boolean;
+  currentUsername: string | null;
 }
 
-export default function PerfilHeader({ user, isOwnProfile }: PerfilHeaderProps) {
+export default function PerfilHeader({
+  user,
+  isOwnProfile,
+  initialIsFollowing,
+  currentUsername,
+}: PerfilHeaderProps) {
   return (
     <div className="w-full flex flex-col relative bg-[#131313]">
       {/* Banner / Capa */}
@@ -63,6 +73,13 @@ export default function PerfilHeader({ user, isOwnProfile }: PerfilHeaderProps) 
                 Editar perfil
               </Button>
             </Link>
+          ) : currentUsername ? (
+            <BotaoSeguir
+              targetUserId={user.id}
+              targetUsername={user.username}
+              currentUsername={currentUsername}
+              initialIsFollowing={initialIsFollowing}
+            />
           ) : (
             <Button
               disabled
@@ -94,10 +111,10 @@ export default function PerfilHeader({ user, isOwnProfile }: PerfilHeaderProps) 
           {/* Contadores Sociais */}
           <div className="flex gap-6 mt-2 text-sm md:text-base text-riff-gray">
             <span className="flex gap-1.5 items-center">
-              <strong className="text-white font-bold">0</strong> seguidores
+              <strong className="text-white font-bold">{user.followersCount}</strong> seguidores
             </span>
             <span className="flex gap-1.5 items-center">
-              <strong className="text-white font-bold">0</strong> seguindo
+              <strong className="text-white font-bold">{user.followingCount}</strong> seguindo
             </span>
           </div>
         </div>

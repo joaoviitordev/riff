@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, boolean, primaryKey } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, boolean, primaryKey, integer } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
 export const users = pgTable("users", {
@@ -14,6 +14,9 @@ export const users = pgTable("users", {
   accessToken: text("access_token").notNull(),
   refreshToken: text("refresh_token").notNull(),
   tokenExpiresAt: timestamp("token_expires_at").notNull(),
+
+  followersCount: integer("followers_count").default(0).notNull(),
+  followingCount: integer("following_count").default(0).notNull(),
 
   deletedAt: timestamp("deleted_at"),
   createdAt: timestamp("created_at").defaultNow().notNull(),

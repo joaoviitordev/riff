@@ -15,6 +15,13 @@
       "when": 1782582805586,
       "tag": "0001_friendly_nighthawk",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1782602380962,
+      "tag": "0002_overconfident_carlie_cooper",
+      "breakpoints": true
     }
   ]
 }
