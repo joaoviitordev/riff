@@ -63,25 +63,25 @@ Conta criada → redireciona para /
 
 ### Fase 1 — Base
 
-- [ ] Setup Next.js + TypeScript + Tailwind + shadcn/ui
-- [ ] Configurar Supabase (banco + storage)
-- [ ] Configurar Drizzle e rodar migrations
-- [ ] NextAuth com provider Spotify
-- [ ] Página de onboarding (escolha do @username)
-- [ ] Página de perfil estática `/[username]`
+- [x] Setup Next.js + TypeScript + Tailwind + shadcn/ui
+- [x] Configurar Supabase (banco + storage)
+- [x] Configurar Drizzle e rodar migrations
+- [x] NextAuth com provider Spotify
+- [x] Página de onboarding (escolha do @username)
+- [x] Página de perfil estática `/[username]`
 
 ### Fase 2 — Spotify Data
 
-- [ ] Wrapper da Spotify API com refresh de token
-- [ ] API routes para top tracks e top artists
-- [ ] Componentes de métricas no profile
-- [ ] Now Playing — polling + escrita no banco
+- [x] Wrapper da Spotify API com refresh de token
+- [x] API routes para top tracks e top artists
+- [x] Componentes de métricas no profile
+- [x] Now Playing — polling + escrita no banco
 
 ### Fase 3 — Social
 
-- [ ] Sistema de follows (follow/unfollow + contagem)
-- [ ] Now Playing ao vivo com Supabase Realtime
-- [ ] Ver perfil de outros usuários autenticado
+- [x] Sistema de follows (follow/unfollow + contagem)
+- [x] Now Playing ao vivo com Supabase Realtime
+- [x] Ver perfil de outros usuários autenticado
 
 ### Fase 4 — Polish
 
@@ -89,7 +89,6 @@ Conta criada → redireciona para /
 - [ ] Estados de loading e empty states bem feitos
 - [ ] SEO e meta tags dinâmicas no perfil (`/[username]`)
 - [ ] Mobile responsivo
-- [ ] Deploy na Vercel com domínio próprio
 
 ---
 
