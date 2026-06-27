@@ -49,7 +49,7 @@ export default function ListaTopMusicas({ userId, periodo }: ListaTopMusicasProp
       {tracks.slice(0, 5).map((track, index) => (
         <a
           key={track.id}
-          href={track.external_urls?.spotify}
+          href={track.external_urls?.spotify || "https://open.spotify.com"}
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-4 p-4 bg-[#1B1B1B] hover:bg-[#252525] border border-border hover:border-riff-orange/30 rounded-xl transition-all duration-200 group"
@@ -77,7 +77,7 @@ export default function ListaTopMusicas({ userId, periodo }: ListaTopMusicasProp
               {track.name}
             </span>
             <span className="text-riff-gray text-sm truncate">
-              {track.artists.map((a) => a.name).join(", ")}
+              {track.artists?.map((a) => a.name).join(", ") || "Artista desconhecido"}
             </span>
           </div>
 

@@ -114,7 +114,7 @@ export default function CardOuvindoAgora({ username }: CardOuvindoAgoraProps) {
             <img
               src={np.albumArt}
               alt={np.trackName || "Capa do álbum"}
-              className="w-full h-full object-cover grayscale-[30%]"
+              className="w-full h-full object-cover grayscale-30"
             />
           ) : (
             <div className="w-full h-full bg-[#252525] flex items-center justify-center">
