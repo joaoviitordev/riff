@@ -116,9 +116,14 @@ export default function ConfiguracoesForm({ initialData }: ConfiguracoesFormProp
         throw new Error(response.serverError);
       }
 
-      toast.success("Perfil atualizado com sucesso!");
-      router.push(`/${values.username}`);
-      router.refresh();
+      toast.success("Perfil atualizado com sucesso!", {
+        duration: 2000,
+      });
+
+      setTimeout(() => {
+        router.push(`/${values.username}`);
+        router.refresh();
+      }, 2000);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Erro ao atualizar perfil.");
     } finally {
