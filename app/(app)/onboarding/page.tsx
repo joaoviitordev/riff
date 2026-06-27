@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -62,6 +63,14 @@ export default function Onboarding() {
           <Button className="bg-riff-orange text-white text-xl font-semibold py-6 rounded-full shadow-lg hover:bg-[#e6501a] transition-colors flex items-center justify-center gap-2 cursor-pointer w-full mt-2">
             Continuar
           </Button>
+          <Link href="/" className="block w-full">
+            <Button
+              variant="outline"
+              className="w-full border-border bg-transparent hover:bg-muted text-white py-6 rounded-full flex items-center justify-center gap-2 text-xl transition-colors cursor-pointer"
+            >
+              Voltar ao Início
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
