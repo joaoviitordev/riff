@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import NextAuth, { NextAuthConfig } from "next-auth";
 import SpotifyProvider from "next-auth/providers/spotify";
 import { db } from "@/db";
 import { users } from "@/db/schema";
@@ -11,13 +11,13 @@ interface SpotifyProfile {
   images?: Array<{ url: string }>;
 }
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
+export const authConfig: NextAuthConfig = {
   providers: [
     SpotifyProvider({
       clientId: process.env.SPOTIFY_CLIENT_ID,
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
       authorization:
-        "https://accounts.spotify.com/authorize?scope=user-read-email,user-read-private,user-read-currently-playing,user-read-playback-state,user-top-read",
+        "https://accounts.spotify.com/authorize?scope=user-read-email,user-read-private,user-read-currently-playing,user-read-playback-state,user-top-read&show_dialog=true",
     }),
   ],
   callbacks: {
@@ -36,7 +36,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       const refreshToken = account.refresh_token;
       const expiresAt = account.expires_at;
 
-      if (!accessToken || !refreshToken || expiresAt === undefined) {
+      if (!accessToken || expiresAt === undefined) {
         return false;
       }
 
@@ -52,7 +52,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             .update(users)
             .set({
               accessToken,
-              refreshToken,
+              refreshToken: refreshToken || existingUser.refreshToken,
               tokenExpiresAt,
               name: name || existingUser.name,
               avatarUrl: avatarUrl || existingUser.avatarUrl,
@@ -60,6 +60,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             })
             .where(eq(users.spotifyId, spotifyId));
         } else {
+          if (!refreshToken) {
+            console.error("Novo usuário efetuando login sem refresh_token.");
+            return false;
+          }
+
           await db.insert(users).values({
             spotifyId,
             email: email || null,
@@ -112,4 +117,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   pages: {
     signIn: "/login",
   },
-});
+};
+
+export const { handlers, auth, signIn, signOut } = NextAuth(authConfig);
