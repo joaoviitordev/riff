@@ -57,7 +57,8 @@ export default function ConfiguracoesForm({ initialData }: ConfiguracoesFormProp
     register,
     handleSubmit,
     watch,
-    formState: { errors },
+    reset,
+    formState: { errors, isDirty },
   } = useForm<ConfigValues>({
     resolver: zodResolver(configSchema),
     defaultValues: {
@@ -119,6 +120,9 @@ export default function ConfiguracoesForm({ initialData }: ConfiguracoesFormProp
       toast.success("Perfil atualizado com sucesso!", {
         duration: 2000,
       });
+
+      // Define os valores salvos como o novo estado limpo (não-sujo) do formulário
+      reset(values);
 
       setTimeout(() => {
         router.push(`/${values.username}`);
@@ -237,7 +241,7 @@ export default function ConfiguracoesForm({ initialData }: ConfiguracoesFormProp
           {/* Botão de Submissão */}
           <Button
             type="submit"
-            disabled={isSubmitting || (usernameValue !== initialData.username && availability && !availability.disponivel)}
+            disabled={isSubmitting || !isDirty || (usernameValue !== initialData.username && availability && !availability.disponivel)}
             className="h-14 bg-riff-orange hover:bg-[#e6501a] text-white font-bold rounded-xl cursor-pointer text-base flex items-center justify-center gap-2 mt-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSubmitting ? (
