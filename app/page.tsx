@@ -1,8 +1,15 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/logo";
+import { auth } from "@/auth";
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth();
+  if (session?.user?.username) {
+    redirect(`/${session.user.username}`);
+  }
+
   return (
     <div className="flex flex-col flex-1 items-center justify-center min-h-screen bg-background text-foreground p-6">
       <div className="w-full max-w-[430px] flex flex-col items-center justify-center">
