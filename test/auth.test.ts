@@ -1,4 +1,4 @@
-import { authConfig } from "../auth";
+import { authOptions } from "../lib/auth";
 import { db } from "../db";
 import { users } from "../db/schema";
 import { eq } from "drizzle-orm";
@@ -10,9 +10,9 @@ const TEST_SPOTIFY_ID = "test_spotify_id_unique_12345";
 async function runTests() {
   console.log("🚀 Iniciando testes de integração de Autenticação...\n");
 
-  const signInCallback = authConfig.callbacks?.signIn;
+  const signInCallback = authOptions.callbacks?.signIn;
   if (!signInCallback) {
-    throw new Error("Callback signIn não encontrada no authConfig");
+    throw new Error("Callback signIn não encontrada no authOptions");
   }
 
   const cleanUp = async () => {

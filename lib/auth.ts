@@ -1,4 +1,4 @@
-import NextAuth, { NextAuthConfig } from "next-auth";
+import { NextAuthOptions } from "next-auth";
 import SpotifyProvider from "next-auth/providers/spotify";
 import { db } from "@/db";
 import { users } from "@/db/schema";
@@ -11,16 +11,15 @@ interface SpotifyProfile {
   images?: Array<{ url: string }>;
 }
 
-export const authConfig: NextAuthConfig = {
-  trustHost: true,
+export const authOptions: NextAuthOptions = {
   providers: [
     SpotifyProvider({
-      clientId: process.env.SPOTIFY_CLIENT_ID,
-      clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+      clientId: process.env.SPOTIFY_CLIENT_ID!,
+      clientSecret: process.env.SPOTIFY_CLIENT_SECRET!,
       authorization: {
         params: {
           scope: "user-read-email user-read-private user-read-currently-playing user-read-playback-state user-top-read",
-          show_dialog: "true",
+          show_dialog: true,
         },
       },
     }),
@@ -112,7 +111,7 @@ export const authConfig: NextAuthConfig = {
       return token;
     },
     async session({ session, token }) {
-      if (token) {
+      if (token && session.user) {
         session.user.id = token.userId as string;
         session.user.username = token.username as string;
         session.user.spotifyId = token.spotifyId as string;
@@ -124,5 +123,3 @@ export const authConfig: NextAuthConfig = {
     signIn: "/login",
   },
 };
-
-export const { handlers, auth, signIn, signOut } = NextAuth(authConfig);

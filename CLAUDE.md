@@ -66,7 +66,7 @@ Você é um engenheiro de software sênior especializado em desenvolvimento web 
 | Banco          | PostgreSQL via Supabase                     |
 | Storage        | Supabase Storage                            |
 | Realtime       | Supabase Realtime                           |
-| Auth           | NextAuth v5 (provider: Spotify OAuth)       |
+| Auth           | NextAuth v4 (provider: Spotify OAuth)       |
 | Deploy         | Vercel                                      |
 
 > **Web vs Mobile nativo:** app mobile é projeto separado (pós-MVP). Todas as telas web devem funcionar bem em celular — o perfil público é a tela mais acessada via mobile por visitantes.
@@ -222,7 +222,7 @@ src/
 │   ├── spotify.ts                    ← tipos da Spotify API
 │   └── perfil.ts
 └── lib/
-    ├── auth.ts                       ← config do NextAuth v5
+    ├── auth.ts                       ← config do NextAuth v4
     ├── spotify.ts                    ← wrapper Spotify API + refresh token
     ├── db.ts                         ← re-exporta db do /db ou remove
     ├── supabase.ts                   ← client Supabase (server + client)

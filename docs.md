@@ -96,6 +96,6 @@ Conta criada → redireciona para /
 
 - [Spotify for Developers](https://developer.spotify.com)
 - [Spotify Web API Docs](https://developer.spotify.com/documentation/web-api)
-- [NextAuth v5 Docs](https://authjs.dev)
+- [NextAuth v4 Docs](https://next-auth.js.org)
 - [Supabase Realtime Docs](https://supabase.com/docs/guides/realtime)
 - [Drizzle ORM Docs](https://orm.drizzle.team)

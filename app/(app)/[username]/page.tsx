@@ -4,7 +4,8 @@ import Link from "next/link";
 import { eq, and, isNull } from "drizzle-orm";
 import { db } from "@/db";
 import { users, follows } from "@/db/schema";
-import { auth } from "@/auth";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import PerfilHeader from "@/components/dominio/perfil/perfil-header";
 import CardOuvindoAgora from "@/components/dominio/now-playing/card-ouvindo-agora";
 import SeletorPeriodo from "@/components/dominio/metricas/seletor-periodo";
@@ -66,7 +67,7 @@ export default async function UserProfilePage({ params, searchParams }: PageProp
     notFound();
   }
 
-  const session = await auth();
+  const session = await getServerSession(authOptions);
   const isOwnProfile = session?.user?.id === userPublico.id;
 
   // Verifica se o usuário logado segue o perfil visitado

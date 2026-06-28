@@ -1,11 +1,11 @@
 "use server";
 
-import { signIn, signOut } from "@/auth";
+import { redirect } from "next/navigation";
 
 export async function loginWithSpotify() {
-  await signIn("spotify");
+  redirect("/api/auth/signin/spotify");
 }
 
 export async function logout() {
-  await signOut();
+  redirect("/api/auth/signout");
 }
