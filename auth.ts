@@ -12,6 +12,7 @@ interface SpotifyProfile {
 }
 
 export const authConfig: NextAuthConfig = {
+  trustHost: true,
   providers: [
     SpotifyProvider({
       clientId: process.env.SPOTIFY_CLIENT_ID,
