@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   title: "Riff",
   description: "A comunidade de música que você sempre quis ter.",
   icons: {
-    icon: "/riff-favicon.svg",
+    icon: "/favicon.svg",
   },
 };
 
