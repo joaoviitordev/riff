@@ -98,7 +98,6 @@ export default function OnboardingForm({ initialData }: OnboardingFormProps) {
         username: values.username,
         name: values.name,
         bio: values.bio,
-        avatarUrl: initialData.avatarUrl,
       });
 
       if (response?.serverError) {

@@ -2,6 +2,7 @@
 
 import { IconEdit, IconUserPlus } from "@tabler/icons-react";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import BotaoSeguir from "./botao-seguir";
 
@@ -34,10 +35,12 @@ export default function PerfilHeader({
       {/* Banner / Capa */}
       <div className="w-full h-48 md:h-64 relative overflow-hidden bg-linear-to-r from-riff-orange/40 via-surface-low to-surface-bright border-b border-border">
         {user.bannerUrl && (
-          <img
+          <Image
             src={user.bannerUrl}
             alt="Capa do perfil"
-            className="w-full h-full object-cover"
+            fill
+            priority
+            className="object-cover"
           />
         )}
       </div>
@@ -45,15 +48,16 @@ export default function PerfilHeader({
       {/* Seção de Informações (Foto, Detalhes e Ações) */}
       <div className="max-w-[800px] w-full mx-auto px-6 relative pb-6">
         {/* Foto de perfil (Avatar) */}
-        <div className="absolute -top-16 left-6 md:-top-20">
+        <div className="absolute -top-16 left-6 md:-top-20 h-32 w-32 md:h-40 md:w-40 rounded-full border-4 border-[#131313] bg-[#1B1B1B] shadow-xl overflow-hidden">
           {user.avatarUrl ? (
-            <img
+            <Image
               src={user.avatarUrl}
               alt={user.name || `@${user.username}`}
-              className="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-[#131313] bg-[#1B1B1B] object-cover shadow-xl"
+              fill
+              className="object-cover"
             />
           ) : (
-            <div className="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-[#131313] bg-[#1B1B1B] flex items-center justify-center shadow-xl">
+            <div className="w-full h-full flex items-center justify-center">
               <span className="text-4xl text-riff-gray font-bold">
                 {user.name ? user.name[0].toUpperCase() : user.username[0].toUpperCase()}
               </span>

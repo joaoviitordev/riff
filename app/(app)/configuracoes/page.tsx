@@ -27,6 +27,7 @@ export default async function ConfiguracoesPage() {
     username: dbUser.username || "",
     bio: dbUser.bio || "",
     avatarUrl: dbUser.avatarUrl || null,
+    bannerUrl: dbUser.bannerUrl || null,
   };
 
   return <ConfiguracoesForm initialData={initialData} />;

@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { IconArrowLeft, IconLoader2 } from "@tabler/icons-react";
 import { verificarUsername } from "@/app/actions/perfil/verificar-username.action";
 import { salvarPerfil } from "@/app/actions/perfil/salvar-perfil.action";
+import UploadImagem from "@/components/dominio/perfil/upload-imagem";
 
 const configSchema = z.object({
   username: z
@@ -29,11 +30,6 @@ const configSchema = z.object({
     .max(160, "A bio pode ter no máximo 160 caracteres.")
     .optional()
     .or(z.literal("")),
-  avatarUrl: z
-    .string()
-    .url("Insira uma URL válida para a foto.")
-    .optional()
-    .or(z.literal("")),
 });
 
 type ConfigValues = z.infer<typeof configSchema>;
@@ -45,6 +41,7 @@ interface ConfiguracoesFormProps {
     username: string;
     bio: string;
     avatarUrl: string | null;
+    bannerUrl: string | null;
   };
 }
 
@@ -52,6 +49,8 @@ export default function ConfiguracoesForm({ initialData }: ConfiguracoesFormProp
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [debouncedUsername, setDebouncedUsername] = useState(initialData.username);
+  const [avatarUrl, setAvatarUrl] = useState(initialData.avatarUrl);
+  const [bannerUrl, setBannerUrl] = useState(initialData.bannerUrl);
 
   const {
     register,
@@ -65,13 +64,11 @@ export default function ConfiguracoesForm({ initialData }: ConfiguracoesFormProp
       username: initialData.username,
       name: initialData.name,
       bio: initialData.bio,
-      avatarUrl: initialData.avatarUrl || "",
     },
   });
 
   const usernameValue = watch("username");
 
-  // Debounce do username para validação (300ms)
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedUsername(usernameValue);
@@ -80,7 +77,6 @@ export default function ConfiguracoesForm({ initialData }: ConfiguracoesFormProp
     return () => clearTimeout(handler);
   }, [usernameValue]);
 
-  // Query de disponibilidade do username (pula validação se for igual ao inicial)
   const { data: availability, isFetching: isChecking } = useQuery({
     queryKey: ["verificar-username", debouncedUsername],
     queryFn: async () => {
@@ -99,7 +95,6 @@ export default function ConfiguracoesForm({ initialData }: ConfiguracoesFormProp
   const onSubmit = async (values: ConfigValues) => {
     setIsSubmitting(true);
     try {
-      // Se alterou o username, verifica se está disponível
       if (values.username !== initialData.username && availability && !availability.disponivel) {
         toast.error("Esse @nome de usuário já está em uso. Tente outro.");
         setIsSubmitting(false);
@@ -110,7 +105,6 @@ export default function ConfiguracoesForm({ initialData }: ConfiguracoesFormProp
         username: values.username,
         name: values.name,
         bio: values.bio,
-        avatarUrl: values.avatarUrl ? values.avatarUrl : null,
       });
 
       if (response?.serverError) {
@@ -121,7 +115,6 @@ export default function ConfiguracoesForm({ initialData }: ConfiguracoesFormProp
         duration: 2000,
       });
 
-      // Define os valores salvos como o novo estado limpo (não-sujo) do formulário
       reset(values);
 
       setTimeout(() => {
@@ -150,6 +143,28 @@ export default function ConfiguracoesForm({ initialData }: ConfiguracoesFormProp
             <h1 className="text-2xl font-bold tracking-tight">Editar Perfil</h1>
             <p className="text-sm text-riff-gray">Configure as informações do seu Riff</p>
           </div>
+        </div>
+
+        {/* Upload de Capa */}
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-semibold text-riff-light-gray">Capa</label>
+          <UploadImagem
+            tipo="banner"
+            urlAtual={bannerUrl}
+            onUploadComplete={(url) => setBannerUrl(url)}
+          />
+        </div>
+
+        {/* Upload de Avatar */}
+        <div className="flex flex-col gap-2 items-center">
+          <label className="text-sm font-semibold text-riff-light-gray self-start">Foto de Perfil</label>
+          <UploadImagem
+            tipo="avatar"
+            urlAtual={avatarUrl}
+            fallbackInicial={initialData.name?.[0]?.toUpperCase() || initialData.username?.[0]?.toUpperCase()}
+            onUploadComplete={(url) => setAvatarUrl(url)}
+          />
+          <p className="text-xs text-riff-gray">Clique para alterar</p>
         </div>
 
         {/* Formulário */}
@@ -218,23 +233,6 @@ export default function ConfiguracoesForm({ initialData }: ConfiguracoesFormProp
             />
             {errors.bio && (
               <p className="text-xs text-red-500 font-medium">{errors.bio.message}</p>
-            )}
-          </div>
-
-          {/* Campo Foto de Perfil */}
-          <div className="flex flex-col gap-2 text-left">
-            <label htmlFor="avatarUrl" className="text-sm font-semibold text-riff-light-gray">
-              URL da Foto de Perfil
-            </label>
-            <Input
-              id="avatarUrl"
-              type="text"
-              placeholder="https://exemplo.com/sua-foto.jpg"
-              {...register("avatarUrl")}
-              className="h-12 bg-[#1B1B1B] border-border focus:border-riff-orange focus:ring-1 focus:ring-riff-orange rounded-xl text-white px-4"
-            />
-            {errors.avatarUrl && (
-              <p className="text-xs text-red-500 font-medium">{errors.avatarUrl.message}</p>
             )}
           </div>
 
