@@ -16,10 +16,15 @@ export const authConfig: NextAuthConfig = {
     SpotifyProvider({
       clientId: process.env.SPOTIFY_CLIENT_ID,
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-      authorization:
-        "https://accounts.spotify.com/authorize?scope=user-read-email,user-read-private,user-read-currently-playing,user-read-playback-state,user-top-read&show_dialog=true",
+      authorization: {
+        params: {
+          scope: "user-read-email user-read-private user-read-currently-playing user-read-playback-state user-top-read",
+          show_dialog: "true",
+        },
+      },
     }),
   ],
+  debug: process.env.NODE_ENV === "development" || true,
   callbacks: {
     async signIn({ profile, account }) {
       if (!profile || !account) {
