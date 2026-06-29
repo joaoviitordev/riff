@@ -11,6 +11,7 @@ import CardOuvindoAgora from "@/components/dominio/now-playing/card-ouvindo-agor
 import SeletorPeriodo from "@/components/dominio/metricas/seletor-periodo";
 import ListaTopMusicas from "@/components/dominio/metricas/lista-top-musicas";
 import ListaTopArtistas from "@/components/dominio/metricas/lista-top-artistas";
+import GuestPromptModal from "@/components/dominio/perfil/guest-prompt-modal";
 
 interface PageProps {
   params: Promise<{ username: string }>;
@@ -95,6 +96,7 @@ export default async function UserProfilePage({ params, searchParams }: PageProp
 
   const session = await getServerSession(authOptions);
   const isOwnProfile = session?.user?.id === userPublico.id;
+  const isGuest = !session?.user;
 
   // Verifica se o usuário logado segue o perfil visitado
   let initialIsFollowing = false;
@@ -171,6 +173,8 @@ export default async function UserProfilePage({ params, searchParams }: PageProp
           </div>
         </section>
       </main>
+
+      {isGuest && <GuestPromptModal username={userPublico.username} />}
     </div>
   );
 }
