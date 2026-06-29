@@ -85,10 +85,10 @@ Conta criada → redireciona para /
 
 ### Fase 4 — Polish
 
-- [ ] Upload de avatar e banner (Supabase Storage)
-- [ ] Estados de loading e empty states bem feitos
-- [ ] SEO e meta tags dinâmicas no perfil (`/[username]`)
-- [ ] Mobile responsivo
+- [x] Upload de avatar e banner (Supabase Storage)
+- [x] Estados de loading e empty states bem feitos
+- [x] SEO e meta tags dinâmicas no perfil (`/[username]`)
+- [x] Mobile responsivo
 
 ---
 

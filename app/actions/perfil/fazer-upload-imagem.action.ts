@@ -5,9 +5,15 @@ import { authActionClient } from "@/lib/safe-action";
 import { db } from "@/db";
 import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@supabase/supabase-js";
 
 const BUCKET_NAME = "avatars";
+
+// Criamos um client admin usando a SERVICE_ROLE_KEY para contornar RLS de forma segura no backend
+const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL || "",
+  process.env.SUPABASE_SERVICE_ROLE_KEY || ""
+);
 
 const TIPOS_MIME_PERMITIDOS = [
   "image/jpeg",
@@ -106,7 +112,7 @@ export async function fazerUploadImagemComFormData(formData: FormData) {
   if (urlAnterior) {
     const pathAnterior = extrairPathDoBucket(urlAnterior);
     if (pathAnterior) {
-      await supabase.storage.from(BUCKET_NAME).remove([pathAnterior]);
+      await supabaseAdmin.storage.from(BUCKET_NAME).remove([pathAnterior]);
     }
   }
 
@@ -117,7 +123,7 @@ export async function fazerUploadImagemComFormData(formData: FormData) {
   const arrayBuffer = await arquivo.arrayBuffer();
   const buffer = new Uint8Array(arrayBuffer);
 
-  const { error: uploadError } = await supabase.storage
+  const { error: uploadError } = await supabaseAdmin.storage
     .from(BUCKET_NAME)
     .upload(path, buffer, {
       contentType: arquivo.type,
@@ -132,7 +138,7 @@ export async function fazerUploadImagemComFormData(formData: FormData) {
 
   const {
     data: { publicUrl },
-  } = supabase.storage.from(BUCKET_NAME).getPublicUrl(path);
+  } = supabaseAdmin.storage.from(BUCKET_NAME).getPublicUrl(path);
 
   const campo = tipo === "avatar" ? { avatarUrl: publicUrl } : { bannerUrl: publicUrl };
 

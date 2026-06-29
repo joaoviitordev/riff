@@ -25,6 +25,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       username: users.username,
       name: users.name,
       bio: users.bio,
+      avatarUrl: users.avatarUrl,
+      bannerUrl: users.bannerUrl,
     })
     .from(users)
     .where(and(eq(users.username, username), isNull(users.deletedAt)))
@@ -37,10 +39,34 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   const displayName = userPublico.name || `@${userPublico.username}`;
+  const description = userPublico.bio || `Confira o perfil musical de ${displayName} no Riff.`;
+  const imageUrl = userPublico.bannerUrl || userPublico.avatarUrl || "/default-og-image.jpg";
 
   return {
     title: `${displayName} - Riff`,
-    description: userPublico.bio || `Confira o perfil musical de ${displayName} no Riff.`,
+    description,
+    openGraph: {
+      title: `${displayName} - Riff`,
+      description,
+      url: `/${userPublico.username}`,
+      siteName: "Riff",
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: `Perfil de ${displayName}`,
+        },
+      ],
+      locale: "pt_BR",
+      type: "profile",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${displayName} - Riff`,
+      description,
+      images: [imageUrl],
+    },
   };
 }
 
