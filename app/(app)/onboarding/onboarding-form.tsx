@@ -107,9 +107,14 @@ export default function OnboardingForm({ initialData }: OnboardingFormProps) {
       if (response?.serverError) {
         toast.error(response.serverError);
       } else if (response?.data?.success) {
+        const targetPath = `/${response.data.username}`;
         toast.success(`Seja bem-vindo ao Riff, @${response.data.username}!`);
-        router.push(`/${response.data.username}`);
         router.refresh();
+        if (typeof window !== "undefined") {
+          window.location.assign(targetPath);
+        } else {
+          router.replace(targetPath);
+        }
       } else {
         toast.error("Ocorreu um erro ao salvar o perfil.");
       }
@@ -238,7 +243,7 @@ export default function OnboardingForm({ initialData }: OnboardingFormProps) {
                     ) : availability ? (
                       availability.disponivel ? (
                         <span className="text-xs text-emerald-500 font-medium">
-                          ✨ Este @nome está disponível!
+                          Este @nome está disponível!
                         </span>
                       ) : (
                         <span className="text-xs text-destructive">
