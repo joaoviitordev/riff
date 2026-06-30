@@ -4,6 +4,12 @@ import { db } from "@/db";
 import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
+export const DEFAULT_POST_LOGIN_REDIRECT = "/onboarding";
+
+export function getSpotifySignInUrl(callbackUrl = DEFAULT_POST_LOGIN_REDIRECT) {
+  return `/api/auth/signin/spotify?callbackUrl=${encodeURIComponent(callbackUrl)}`;
+}
+
 interface SpotifyProfile {
   id: string;
   display_name?: string;
@@ -18,7 +24,8 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET!,
       authorization: {
         params: {
-          scope: "user-read-email user-read-private user-read-currently-playing user-read-playback-state user-top-read",
+          scope:
+            "user-read-email user-read-private user-read-currently-playing user-read-playback-state user-top-read",
           show_dialog: true,
         },
       },

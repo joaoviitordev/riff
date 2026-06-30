@@ -1,4 +1,8 @@
-import { authOptions } from "../lib/auth";
+import {
+  authOptions,
+  DEFAULT_POST_LOGIN_REDIRECT,
+  getSpotifySignInUrl,
+} from "../lib/auth";
 import { db } from "../db";
 import { users } from "../db/schema";
 import { eq } from "drizzle-orm";
@@ -50,7 +54,11 @@ async function runTests() {
       credentials: {},
     });
 
-    assert.strictEqual(signInNewUserResult, true, "Novo login de usuário deveria retornar true");
+    assert.strictEqual(
+      signInNewUserResult,
+      true,
+      "Novo login de usuário deveria retornar true",
+    );
 
     // Verificar se o usuário foi persistido no banco
     const userInDb = await db.query.users.findFirst({
@@ -82,18 +90,30 @@ async function runTests() {
       credentials: {},
     });
 
-    assert.strictEqual(signInNoRefreshResult, false, "Login de novo usuário sem refresh_token deveria retornar false");
-    
+    assert.strictEqual(
+      signInNoRefreshResult,
+      false,
+      "Login de novo usuário sem refresh_token deveria retornar false",
+    );
+
     const userInDbNoRefresh = await db.query.users.findFirst({
       where: eq(users.spotifyId, TEST_SPOTIFY_ID),
     });
-    assert.strictEqual(userInDbNoRefresh, undefined, "O usuário sem refresh_token não deveria ser inserido no banco");
-    console.log("✅ Sucesso: Login rejeitado como esperado quando falta refresh_token.");
+    assert.strictEqual(
+      userInDbNoRefresh,
+      undefined,
+      "O usuário sem refresh_token não deveria ser inserido no banco",
+    );
+    console.log(
+      "✅ Sucesso: Login rejeitado como esperado quando falta refresh_token.",
+    );
 
     // ----------------------------------------------------
     // Caso de Teste 3: Usuário existente logando SEM refresh_token (deve reutilizar o anterior)
     // ----------------------------------------------------
-    console.log("\n3. Testando login de usuário existente sem fornecer novo refresh_token...");
+    console.log(
+      "\n3. Testando login de usuário existente sem fornecer novo refresh_token...",
+    );
     // 3a. Criar o usuário novamente
     await signInCallback({
       profile: profileNewUser as unknown as Profile,
@@ -117,19 +137,43 @@ async function runTests() {
       credentials: {},
     });
 
-    assert.strictEqual(signInExistingResult, true, "Login de usuário existente sem refresh_token deveria retornar true");
+    assert.strictEqual(
+      signInExistingResult,
+      true,
+      "Login de usuário existente sem refresh_token deveria retornar true",
+    );
 
     const updatedUserInDb = await db.query.users.findFirst({
       where: eq(users.spotifyId, TEST_SPOTIFY_ID),
     });
 
     assert.ok(updatedUserInDb, "O usuário deveria continuar existindo");
-    assert.strictEqual(updatedUserInDb.accessToken, "mock_access_token_atualizado", "O access token deveria ter sido atualizado");
-    assert.strictEqual(updatedUserInDb.refreshToken, "mock_refresh_token_1", "O refresh token antigo deveria ter sido mantido");
-    console.log("✅ Sucesso: Usuário existente logado com sucesso reutilizando o refresh_token anterior.");
+    assert.strictEqual(
+      updatedUserInDb.accessToken,
+      "mock_access_token_atualizado",
+      "O access token deveria ter sido atualizado",
+    );
+    assert.strictEqual(
+      updatedUserInDb.refreshToken,
+      "mock_refresh_token_1",
+      "O refresh token antigo deveria ter sido mantido",
+    );
+    console.log(
+      "✅ Sucesso: Usuário existente logado com sucesso reutilizando o refresh_token anterior.",
+    );
+
+    assert.strictEqual(
+      DEFAULT_POST_LOGIN_REDIRECT,
+      "/onboarding",
+      "A rota pós-login padrão deve levar para onboarding",
+    );
+    assert.strictEqual(
+      getSpotifySignInUrl(),
+      "/api/auth/signin/spotify?callbackUrl=%2Fonboarding",
+      "A URL de login do Spotify deve incluir callbackUrl para onboarding",
+    );
 
     console.log("\n🎉 Todos os testes de autenticação passaram com sucesso!");
-
   } catch (error) {
     console.error("\n❌ Erro durante a execução dos testes:");
     console.error(error);

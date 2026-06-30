@@ -17,7 +17,7 @@ export default function LoginPage() {
         </div>
         <main className="w-full flex flex-col gap-4">
           <Button
-            onClick={() => signIn("spotify")}
+            onClick={() => signIn("spotify", { callbackUrl: "/onboarding" })}
             className="w-full bg-riff-spotify hover:bg-[#1ed760] text-white font-semibold py-6 rounded-full flex items-center justify-center gap-2 text-xl transition-colors cursor-pointer"
           >
             <svg
