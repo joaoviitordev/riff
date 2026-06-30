@@ -76,13 +76,17 @@ export default function OnboardingForm({ initialData }: OnboardingFormProps) {
   const { data: availability, isFetching: isChecking } = useQuery({
     queryKey: ["verificar-username", debouncedUsername],
     queryFn: async () => {
-      if (debouncedUsername.length < 3 || !/^[a-z0-9_]+$/.test(debouncedUsername)) {
+      if (
+        debouncedUsername.length < 3 ||
+        !/^[a-z0-9_]+$/.test(debouncedUsername)
+      ) {
         return null;
       }
       const response = await verificarUsername({ username: debouncedUsername });
       return response?.data ?? null;
     },
-    enabled: debouncedUsername.length >= 3 && /^[a-z0-9_]+$/.test(debouncedUsername),
+    enabled:
+      debouncedUsername.length >= 3 && /^[a-z0-9_]+$/.test(debouncedUsername),
   });
 
   const onSubmit = async (values: OnboardingValues) => {
@@ -104,7 +108,7 @@ export default function OnboardingForm({ initialData }: OnboardingFormProps) {
         toast.error(response.serverError);
       } else if (response?.data?.success) {
         toast.success(`Seja bem-vindo ao Riff, @${response.data.username}!`);
-        router.push("/");
+        router.push(`/${response.data.username}`);
         router.refresh();
       } else {
         toast.error("Ocorreu um erro ao salvar o perfil.");
@@ -116,19 +120,26 @@ export default function OnboardingForm({ initialData }: OnboardingFormProps) {
     }
   };
 
-  const isUsernameValidFormat = usernameValue.length >= 3 && /^[a-z0-9_]+$/.test(usernameValue);
+  const isUsernameValidFormat =
+    usernameValue.length >= 3 && /^[a-z0-9_]+$/.test(usernameValue);
 
   return (
     <div className="flex flex-col flex-1 items-center justify-center min-h-screen bg-background text-foreground p-6">
       <div className="w-full max-w-[430px] flex flex-col gap-6">
-        <header data-purpose="title-section" className="flex flex-col text-left">
+        <header
+          data-purpose="title-section"
+          className="flex flex-col text-left"
+        >
           <h1 className="text-3xl font-bold mb-2">Crie seu perfil</h1>
           <p className="text-riff-light-gray text-lg">
             Como a comunidade vai te conhecer...
           </p>
         </header>
 
-        <section className="flex flex-col items-center justify-center" data-purpose="profile-upload">
+        <section
+          className="flex flex-col items-center justify-center"
+          data-purpose="profile-upload"
+        >
           <div className="relative group flex flex-col items-center">
             {initialData.avatarUrl ? (
               <img
@@ -156,14 +167,18 @@ export default function OnboardingForm({ initialData }: OnboardingFormProps) {
                 </svg>
               </div>
             )}
-            <p className="text-sm text-riff-gray italic">Foto importada do Spotify</p>
+            <p className="text-sm text-riff-gray italic">
+              Foto importada do Spotify
+            </p>
           </div>
         </section>
 
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           {/* Nome de Exibição */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-semibold text-riff-light-gray px-2">Nome de Exibição</label>
+            <label className="text-sm font-semibold text-riff-light-gray px-2">
+              Nome de Exibição
+            </label>
             <Input
               {...register("name")}
               placeholder="Seu nome"
@@ -171,18 +186,24 @@ export default function OnboardingForm({ initialData }: OnboardingFormProps) {
               maxLength={50}
             />
             {errors.name && (
-              <span className="text-xs text-destructive px-2 mt-1">{errors.name.message}</span>
+              <span className="text-xs text-destructive px-2 mt-1">
+                {errors.name.message}
+              </span>
             )}
           </div>
 
           {/* Nome de Usuário (@handle) */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-semibold text-riff-light-gray px-2">@ Nome de Usuário</label>
+            <label className="text-sm font-semibold text-riff-light-gray px-2">
+              @ Nome de Usuário
+            </label>
             <div className="relative">
               <Input
                 {...register("username", {
                   onChange: (e) => {
-                    const cleanValue = e.target.value.toLowerCase().replace(/\s+/g, "");
+                    const cleanValue = e.target.value
+                      .toLowerCase()
+                      .replace(/\s+/g, "");
                     setValue("username", cleanValue);
                   },
                 })}
@@ -190,27 +211,39 @@ export default function OnboardingForm({ initialData }: OnboardingFormProps) {
                 className="w-full p-6 rounded-full bg-[#1B1B1B] border-border text-white focus-visible:ring-riff-orange pl-8"
                 maxLength={30}
               />
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-riff-gray font-semibold">@</span>
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-riff-gray font-semibold">
+                @
+              </span>
             </div>
 
             {/* Feedbacks em tempo real para o username (Filtragem Proativa P-004) */}
             {usernameValue.length > 0 && (
               <div className="px-2 mt-1 flex flex-col gap-1">
                 {errors.username && (
-                  <span className="text-xs text-destructive">{errors.username.message}</span>
+                  <span className="text-xs text-destructive">
+                    {errors.username.message}
+                  </span>
                 )}
                 {!errors.username && usernameValue.length < 3 && (
-                  <span className="text-xs text-riff-gray">O nome deve ter pelo menos 3 caracteres.</span>
+                  <span className="text-xs text-riff-gray">
+                    O nome deve ter pelo menos 3 caracteres.
+                  </span>
                 )}
                 {isUsernameValidFormat && (
                   <div className="flex items-center gap-2">
                     {isChecking ? (
-                      <span className="text-xs text-riff-gray animate-pulse">Verificando disponibilidade...</span>
+                      <span className="text-xs text-riff-gray animate-pulse">
+                        Verificando disponibilidade...
+                      </span>
                     ) : availability ? (
                       availability.disponivel ? (
-                        <span className="text-xs text-emerald-500 font-medium">✨ Este @nome está disponível!</span>
+                        <span className="text-xs text-emerald-500 font-medium">
+                          ✨ Este @nome está disponível!
+                        </span>
                       ) : (
-                        <span className="text-xs text-destructive">Este @nome já está sendo usado.</span>
+                        <span className="text-xs text-destructive">
+                          Este @nome já está sendo usado.
+                        </span>
                       )
                     ) : null}
                   </div>
@@ -221,7 +254,9 @@ export default function OnboardingForm({ initialData }: OnboardingFormProps) {
 
           {/* Biografia */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-semibold text-riff-light-gray px-2">Biografia (opcional)</label>
+            <label className="text-sm font-semibold text-riff-light-gray px-2">
+              Biografia (opcional)
+            </label>
             <Textarea
               {...register("bio")}
               placeholder="Conte um pouco sobre seu gosto musical..."
@@ -229,7 +264,9 @@ export default function OnboardingForm({ initialData }: OnboardingFormProps) {
               maxLength={160}
             />
             {errors.bio && (
-              <span className="text-xs text-destructive px-2 mt-1">{errors.bio.message}</span>
+              <span className="text-xs text-destructive px-2 mt-1">
+                {errors.bio.message}
+              </span>
             )}
           </div>
 
