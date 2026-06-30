@@ -5,6 +5,7 @@ import { authActionClient } from "@/lib/safe-action";
 import { db } from "@/db";
 import { users } from "@/db/schema";
 import { eq, and, isNull, ne } from "drizzle-orm";
+import { redirect } from "next/navigation";
 
 const salvarPerfilSchema = z.object({
   username: z
@@ -33,7 +34,7 @@ export const salvarPerfil = authActionClient
       where: and(
         eq(users.username, username),
         isNull(users.deletedAt),
-        ne(users.id, userId)
+        ne(users.id, userId),
       ),
     });
 
@@ -51,9 +52,5 @@ export const salvarPerfil = authActionClient
       })
       .where(eq(users.id, userId));
 
-    return {
-      success: true,
-      username,
-    };
+    redirect(`/${username}`);
   });
-

@@ -106,17 +106,8 @@ export default function OnboardingForm({ initialData }: OnboardingFormProps) {
 
       if (response?.serverError) {
         toast.error(response.serverError);
-      } else if (response?.data?.success) {
-        const targetPath = `/${response.data.username}`;
-        toast.success(`Seja bem-vindo ao Riff, @${response.data.username}!`);
-        router.refresh();
-        if (typeof window !== "undefined") {
-          window.location.assign(targetPath);
-        } else {
-          router.replace(targetPath);
-        }
       } else {
-        toast.error("Ocorreu um erro ao salvar o perfil.");
+        toast.success(`Seja bem-vindo ao Riff, @${values.username}!`);
       }
     } catch (error) {
       toast.error("Não conseguimos salvar seu perfil. Tente novamente.");
