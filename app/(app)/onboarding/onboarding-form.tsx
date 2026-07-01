@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -41,6 +42,7 @@ interface OnboardingFormProps {
 
 export default function OnboardingForm({ initialData }: OnboardingFormProps) {
   const router = useRouter();
+  const { update } = useSession();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [usernameInput, setUsernameInput] = useState("");
   const [debouncedUsername, setDebouncedUsername] = useState("");
@@ -106,12 +108,15 @@ export default function OnboardingForm({ initialData }: OnboardingFormProps) {
 
       if (response?.serverError) {
         toast.error(response.serverError);
-      } else {
-        toast.success(`Seja bem-vindo ao Riff, @${values.username}!`);
+        setIsSubmitting(false);
+        return;
       }
+
+      await update();
+      toast.success(`Seja bem-vindo ao Riff, @${values.username}!`);
+      router.replace(`/${values.username}`);
     } catch (error) {
       toast.error("Não conseguimos salvar seu perfil. Tente novamente.");
-    } finally {
       setIsSubmitting(false);
     }
   };
