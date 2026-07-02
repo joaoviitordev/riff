@@ -13,6 +13,7 @@ import ListaTopMusicas from "@/components/dominio/metricas/lista-top-musicas";
 import ListaTopArtistas from "@/components/dominio/metricas/lista-top-artistas";
 import GuestPromptModal from "@/components/dominio/perfil/guest-prompt-modal";
 import BuscaUsuarios from "@/components/dominio/perfil/busca-usuarios";
+import AvatarUsuarioLogado from "@/components/dominio/perfil/avatar-usuario-logado";
 
 interface PageProps {
   params: Promise<{ username: string }>;
@@ -114,13 +115,45 @@ export default async function UserProfilePage({ params, searchParams }: PageProp
   const abaAtiva = aba === "artistas" ? "artistas" : "musicas";
   const periodoAtivo = periodo === "ultimos-6-meses" || periodo === "todo-tempo" ? periodo : "ultimo-mes";
 
+  // Dados do próprio usuário logado, para o atalho de retorno ao perfil
+  let usuarioLogado: { username: string; name: string | null; avatarUrl: string | null } | null = null;
+  if (session?.user?.id && session.user.username) {
+    if (isOwnProfile) {
+      usuarioLogado = {
+        username: userPublico.username,
+        name: userPublico.name,
+        avatarUrl: userPublico.avatarUrl,
+      };
+    } else {
+      const [current] = await db
+        .select({
+          username: users.username,
+          name: users.name,
+          avatarUrl: users.avatarUrl,
+        })
+        .from(users)
+        .where(and(eq(users.id, session.user.id), isNull(users.deletedAt)))
+        .limit(1);
+      usuarioLogado = current?.username ? { ...current, username: current.username } : null;
+    }
+  }
+
   return (
     <div className="flex flex-col flex-1 w-full min-h-screen bg-[#131313] pb-12">
       {/* Busca de pessoas (apenas para usuários conectados) */}
       {!isGuest && (
         <div className="w-full border-b border-border bg-[#131313] sticky top-0 z-30">
-          <div className="max-w-[800px] w-full mx-auto px-6 py-3">
-            <BuscaUsuarios />
+          <div className="max-w-[800px] w-full mx-auto px-6 py-3 flex items-center gap-3">
+            <div className="flex-1 min-w-0">
+              <BuscaUsuarios />
+            </div>
+            {usuarioLogado && (
+              <AvatarUsuarioLogado
+                username={usuarioLogado.username}
+                name={usuarioLogado.name}
+                avatarUrl={usuarioLogado.avatarUrl}
+              />
+            )}
           </div>
         </div>
       )}
