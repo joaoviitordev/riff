@@ -10,10 +10,13 @@ export const users = pgTable("users", {
   avatarUrl: text("avatar_url"),
   bannerUrl: text("banner_url"),
 
-  spotifyId: text("spotify_id").notNull().unique(),
-  accessToken: text("access_token").notNull(),
-  refreshToken: text("refresh_token").notNull(),
-  tokenExpiresAt: timestamp("token_expires_at").notNull(),
+  googleId: text("google_id").unique(),
+  authProvider: text("auth_provider"),
+
+  spotifyId: text("spotify_id").unique(),
+  accessToken: text("access_token"),
+  refreshToken: text("refresh_token"),
+  tokenExpiresAt: timestamp("token_expires_at"),
 
   followersCount: integer("followers_count").default(0).notNull(),
   followingCount: integer("following_count").default(0).notNull(),

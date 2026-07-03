@@ -14,13 +14,17 @@ export async function GET(request: NextRequest) {
   }
 
   const [user] = await db
-    .select({ id: users.id })
+    .select({ id: users.id, spotifyId: users.spotifyId })
     .from(users)
     .where(and(eq(users.id, userId), isNull(users.deletedAt)))
     .limit(1);
 
   if (!user) {
     return NextResponse.json({ error: "Usuário não encontrado." }, { status: 404 });
+  }
+
+  if (!user.spotifyId) {
+    return NextResponse.json([]);
   }
 
   let timeRange = "short_term";

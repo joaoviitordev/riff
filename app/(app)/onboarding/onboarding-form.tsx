@@ -37,6 +37,7 @@ interface OnboardingFormProps {
   initialData: {
     name: string;
     avatarUrl: string | null;
+    authProvider: string | null;
   };
 }
 
@@ -169,7 +170,9 @@ export default function OnboardingForm({ initialData }: OnboardingFormProps) {
               </div>
             )}
             <p className="text-sm text-riff-gray italic">
-              Foto importada do Spotify
+              {initialData.authProvider === "google"
+                ? "Foto importada da sua conta Google"
+                : "Foto importada do Spotify"}
             </p>
           </div>
         </section>

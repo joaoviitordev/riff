@@ -24,7 +24,9 @@ export const authActionClient = actionClient.use(async ({ next }) => {
         user: {
           id: string;
           username: string | null;
-          spotifyId: string;
+          spotifyId: string | null;
+          hasSpotify: boolean;
+          provider: string | null;
         };
       }
     }

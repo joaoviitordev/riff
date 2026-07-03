@@ -30,6 +30,7 @@ export default async function OnboardingPage() {
   const initialData = {
     name: dbUser.name || "",
     avatarUrl: dbUser.avatarUrl || null,
+    authProvider: dbUser.authProvider,
   };
 
   return <OnboardingForm initialData={initialData} />;

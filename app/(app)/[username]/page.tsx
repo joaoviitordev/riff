@@ -85,6 +85,7 @@ export default async function UserProfilePage({ params, searchParams }: PageProp
       bio: users.bio,
       avatarUrl: users.avatarUrl,
       bannerUrl: users.bannerUrl,
+      spotifyId: users.spotifyId,
       followersCount: users.followersCount,
       followingCount: users.followingCount,
     })
@@ -95,6 +96,8 @@ export default async function UserProfilePage({ params, searchParams }: PageProp
   if (!userPublico || !userPublico.username) {
     notFound();
   }
+
+  const temSpotify = !!userPublico.spotifyId;
 
   const session = await getServerSession(authOptions);
   const isOwnProfile = session?.user?.id === userPublico.id;
@@ -168,6 +171,24 @@ export default async function UserProfilePage({ params, searchParams }: PageProp
 
       {/* Container de Conteúdo */}
       <main className="max-w-[800px] w-full mx-auto px-6 mt-6 flex flex-col gap-8">
+        {!temSpotify ? (
+          <section
+            aria-label="Sem Spotify conectado"
+            className="flex flex-col items-center justify-center text-center gap-2 rounded-2xl border border-border bg-[#1B1B1B] px-6 py-10"
+          >
+            <p className="text-white text-lg font-semibold">
+              {isOwnProfile
+                ? "Você ainda não conectou o Spotify"
+                : `${userPublico.name || `@${userPublico.username}`} ainda não conectou o Spotify`}
+            </p>
+            <p className="text-riff-gray text-sm max-w-[420px]">
+              {isOwnProfile
+                ? "Conecte o Spotify para mostrar o que você está ouvindo agora e suas músicas e artistas mais ouvidos."
+                : "Quando conectar o Spotify, o que estiver ouvindo agora e suas estatísticas musicais aparecem aqui."}
+            </p>
+          </section>
+        ) : (
+          <>
         {/* Card Ouvindo Agora */}
         <section aria-label="Status atual">
           <CardOuvindoAgora username={userPublico.username} userId={userPublico.id} />
@@ -215,6 +236,8 @@ export default async function UserProfilePage({ params, searchParams }: PageProp
             )}
           </div>
         </section>
+          </>
+        )}
       </main>
 
       {isGuest && <GuestPromptModal username={userPublico.username} />}

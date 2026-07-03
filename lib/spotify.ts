@@ -3,9 +3,22 @@ import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import type { SpotifyCurrentlyPlaying, SpotifyTrack, SpotifyArtist } from "@/types/spotify";
 
+export async function usuarioTemSpotify(userId: string): Promise<boolean> {
+  const [user] = await db
+    .select({ spotifyId: users.spotifyId })
+    .from(users)
+    .where(eq(users.id, userId))
+    .limit(1);
+  return !!user?.spotifyId;
+}
+
 export async function getAccessTokenValido(userId: string): Promise<string> {
   const [user] = await db.select().from(users).where(eq(users.id, userId)).limit(1);
   if (!user) throw new Error("Usuário não encontrado.");
+
+  if (!user.accessToken || !user.refreshToken || !user.tokenExpiresAt) {
+    throw new Error("Este perfil não conectou o Spotify.");
+  }
 
   const expirado = new Date() >= new Date(user.tokenExpiresAt);
   if (!expirado) return user.accessToken;
