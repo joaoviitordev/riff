@@ -87,7 +87,8 @@ export default function PerfilHeader({
           ) : (
             <Button
               disabled
-              className="h-14 px-8 bg-riff-orange hover:bg-[#e6501a] text-white font-semibold rounded-full flex items-center gap-2 cursor-pointer text-base disabled:bg-riff-gray/50 disabled:cursor-not-allowed"
+              title="Conecte com o Spotify para seguir"
+              className="h-14 px-8 text-white font-semibold rounded-full flex items-center gap-2 text-base disabled:bg-riff-gray/50 disabled:cursor-not-allowed disabled:opacity-100"
             >
               <IconUserPlus size={20} />
               Seguir
