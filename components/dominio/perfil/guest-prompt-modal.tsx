@@ -49,7 +49,7 @@ export default function GuestPromptModal({ username }: GuestPromptModalProps) {
             Quer acompanhar o que <strong className="text-white">@{username}</strong> e seus amigos estão ouvindo agora? Crie sua conta no Riff para interagir e compartilhar suas próprias descobertas!
           </DialogDescription>
         </DialogHeader>
-        <DialogFooter className="flex flex-col gap-3 mt-4">
+        <DialogFooter className="flex flex-col gap-3 sm:flex-col sm:justify-normal">
           <Link href="/login" className="w-full" onClick={() => handleOpenChange(false)}>
             <Button className="w-full h-12 bg-[#1db954] hover:bg-[#1db954] text-black font-semibold rounded-full">
               Conectar com Spotify
