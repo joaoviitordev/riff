@@ -12,6 +12,7 @@ import SeletorPeriodo from "@/components/dominio/metricas/seletor-periodo";
 import ListaTopMusicas from "@/components/dominio/metricas/lista-top-musicas";
 import ListaTopArtistas from "@/components/dominio/metricas/lista-top-artistas";
 import GuestPromptModal from "@/components/dominio/perfil/guest-prompt-modal";
+import BotaoConectarSpotify from "@/components/dominio/perfil/botao-conectar-spotify";
 import BuscaUsuarios from "@/components/dominio/perfil/busca-usuarios";
 import AvatarUsuarioLogado from "@/components/dominio/perfil/avatar-usuario-logado";
 
@@ -186,6 +187,7 @@ export default async function UserProfilePage({ params, searchParams }: PageProp
                 ? "Conecte o Spotify para mostrar o que você está ouvindo agora e suas músicas e artistas mais ouvidos."
                 : "Quando conectar o Spotify, o que estiver ouvindo agora e suas estatísticas musicais aparecem aqui."}
             </p>
+            {isOwnProfile && <BotaoConectarSpotify />}
           </section>
         ) : (
           <>

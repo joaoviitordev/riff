@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { IconEdit, IconUserPlus } from "@tabler/icons-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -30,6 +31,9 @@ export default function PerfilHeader({
   initialIsFollowing,
   currentUsername,
 }: PerfilHeaderProps) {
+  const [avatarComErro, setAvatarComErro] = useState(false);
+  const mostrarAvatar = !!user.avatarUrl && !avatarComErro;
+
   return (
     <div className="w-full flex flex-col relative bg-[#131313]">
       {/* Banner / Capa */}
@@ -49,12 +53,13 @@ export default function PerfilHeader({
       <div className="max-w-[800px] w-full mx-auto px-6 relative pb-6">
         {/* Foto de perfil (Avatar) */}
         <div className="absolute -top-16 left-6 md:-top-20 h-32 w-32 md:h-40 md:w-40 rounded-full border-4 border-[#131313] bg-[#1B1B1B] shadow-xl overflow-hidden">
-          {user.avatarUrl ? (
+          {mostrarAvatar ? (
             <Image
-              src={user.avatarUrl}
+              src={user.avatarUrl!}
               alt={user.name || `@${user.username}`}
               fill
               className="object-cover"
+              onError={() => setAvatarComErro(true)}
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
