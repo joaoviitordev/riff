@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSpotifyCurrentlyPlaying } from "@/lib/spotify";
+import { aplicarRateLimit } from "@/lib/rate-limit";
 import { db } from "@/db";
 import { users, nowPlaying } from "@/db/schema";
 import { eq, and, isNull } from "drizzle-orm";
@@ -9,6 +10,9 @@ interface RouteProps {
 }
 
 export async function GET(request: NextRequest, { params }: RouteProps) {
+  const limite = await aplicarRateLimit("now-playing", request);
+  if (limite) return limite;
+
   const { username } = await params;
 
   if (!username) {

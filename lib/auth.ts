@@ -26,6 +26,7 @@ interface GoogleProfile {
 }
 
 export const authOptions: NextAuthOptions = {
+  secret: process.env.AUTH_SECRET,
   providers: [
     SpotifyProvider({
       clientId: process.env.SPOTIFY_CLIENT_ID!,
@@ -43,7 +44,7 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
-  debug: process.env.NODE_ENV === "development" || true,
+  debug: process.env.NODE_ENV === "development",
   callbacks: {
     async signIn({ profile, account }) {
       if (!profile || !account) {

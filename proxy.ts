@@ -6,11 +6,11 @@ export const proxy = withAuth(
     const username = req.nextauth.token?.username;
     const nextUrl = req.nextUrl;
 
-    const isProfilePage = nextUrl.pathname.startsWith("/profile");
+    const isConfiguracoesPage = nextUrl.pathname.startsWith("/configuracoes");
     const isOnboardingPage = nextUrl.pathname.startsWith("/onboarding");
     const isLoginPage = nextUrl.pathname.startsWith("/login");
 
-    if (!isLoggedIn && (isProfilePage || isOnboardingPage)) {
+    if (!isLoggedIn && (isConfiguracoesPage || isOnboardingPage)) {
       return Response.redirect(new URL("/login", nextUrl));
     }
 

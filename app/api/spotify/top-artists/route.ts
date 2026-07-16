@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSpotifyTopArtists } from "@/lib/spotify";
+import { aplicarRateLimit } from "@/lib/rate-limit";
 import { db } from "@/db";
 import { users } from "@/db/schema";
 import { eq, and, isNull } from "drizzle-orm";
 
 export async function GET(request: NextRequest) {
+  const limite = await aplicarRateLimit("metricas", request);
+  if (limite) return limite;
+
   const { searchParams } = new URL(request.url);
   const userId = searchParams.get("userId");
   const periodo = searchParams.get("periodo");
