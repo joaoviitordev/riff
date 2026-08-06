@@ -4,6 +4,10 @@ Riff é uma rede social musical que conecta pessoas através do Spotify. Cada us
 
 O diferencial do produto é a camada social: seguir pessoas, acompanhar o que amigos estão ouvindo em tempo real e descobrir músicas novas pelo gosto de quem você já conhece.
 
+<p align="center">
+  <img src="public/riff.png" alt="Apresentção Riff" width="100%" />
+</p>
+
 ## Índice
 
 - [Visão geral](#visão-geral)
