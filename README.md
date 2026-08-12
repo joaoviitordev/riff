@@ -161,7 +161,7 @@ O estado exibido na interface depende dos dados retornados:
 
 O Riff está no ar em [riff-mauve.vercel.app](https://riff-mauve.vercel.app/).
 
-A API do Spotify roda em modo de desenvolvimento, que aceita no máximo 25 usuários (veja [Limitações conhecidas](#limitações-conhecidas)). Por isso, para usar todas as funcionalidades — conectar sua conta do Spotify, ver o "ouvindo agora" e suas métricas musicais — é necessário que o dono do projeto adicione seu e-mail nas cotas de desenvolvedor do Spotify.
+A API do Spotify roda em modo de desenvolvimento, que aceita no máximo 5 usuários (veja [Limitações conhecidas](#limitações-conhecidas)). Por isso, para usar todas as funcionalidades — conectar sua conta do Spotify, ver o "ouvindo agora" e suas métricas musicais — é necessário que o dono do projeto adicione seu e-mail nas cotas de desenvolvedor do Spotify.
 
 Para ter uma visão inicial do produto sem essa liberação, basta fazer login com Google.
 
