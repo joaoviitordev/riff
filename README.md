@@ -5,7 +5,7 @@ Riff é uma rede social musical que conecta pessoas através do Spotify. Cada us
 O diferencial do produto é a camada social: seguir pessoas, acompanhar o que amigos estão ouvindo em tempo real e descobrir músicas novas pelo gosto de quem você já conhece.
 
 <p align="center">
-  <img src="public/riff.png" alt="Apresentção Riff" width="100%" />
+  <img src="public/riff.png" alt="Apresentação Riff" width="100%" />
 </p>
 
 ## Índice
@@ -38,7 +38,7 @@ O escopo do produto é **multi-user, single-tenant**: não existem organizaçõe
 
 - **Autenticação e onboarding** — login com Spotify ou Google, conexão da conta do Spotify e escolha do `@nome de usuário` com verificação de disponibilidade em tempo real.
 - **Perfil público (`/[username]`)** — página acessível sem login, com foto de perfil, capa, bio e as demais seções abaixo.
-- **Ouvindo agora** — música tocando no momento, atualizada por polling à cada 30 segundos e propagada aos visitantes via Supabase Realtime. Quando o usuário não está ouvindo nada, mostra a última música ouvida ou o estado de sem atividade recente.
+- **Ouvindo agora** — música tocando no momento, atualizada por polling a cada 30 segundos e propagada aos visitantes via Supabase Realtime. Quando o usuário não está ouvindo nada, mostra a última música ouvida ou o estado de sem atividade recente.
 - **Métricas musicais** — suas músicas mais ouvidas e seus artistas favoritos, com seletor de período (último mês, últimos 6 meses, todo o tempo).
 - **Social** — seguir e deixar de seguir outros usuários, com contagem de seguidores e seguindo sempre consistente.
 
@@ -178,7 +178,7 @@ Para ter uma visão inicial do produto sem essa liberação, basta fazer login c
 
 ## Limitações conhecidas
 
-- O modo de desenvolvimento da API do Spotify aceita até 5 usuários. Para escalar além disso é necessário solicitar uma extensão de quota no Spotify for Developers.
+- O modo de desenvolvimento da API do Spotify aceita até 5 usuários, cada um liberado manualmente pelo dono do app. **Este é um teto fixo para o projeto, não uma etapa pendente.** Desde 15 de maio de 2025, a extensão de quota do Spotify só é concedida a organizações que comprovem entidade jurídica registrada, serviço lançado, presença nos mercados principais, viabilidade comercial e um mínimo de 250 mil usuários ativos por mês — critérios que um projeto pessoal não tem como atingir, já que crescer até lá exigiria justamente a quota estendida. Ver [Quota modes](https://developer.spotify.com/documentation/web-api/concepts/quota-modes).
 - As métricas musicais são buscadas sob demanda na API do Spotify, sem cache pesado no MVP.
 - O histórico de músicas é limitado às últimas 50 reproduções retornadas pela API do Spotify; um histórico mais longo, no estilo Wrapped, exigiria um processo periódico de persistência ainda não implementado.
 - O aplicativo mobile nativo não está incluído neste projeto.
