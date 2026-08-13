@@ -5,6 +5,7 @@ import { authActionClient } from "@/lib/safe-action";
 import { db } from "@/db";
 import { users } from "@/db/schema";
 import { eq, and, isNull, ne } from "drizzle-orm";
+import { usernameEstaReservado } from "@/lib/usernames-reservados";
 
 const salvarPerfilSchema = z.object({
   username: z
@@ -28,6 +29,10 @@ export const salvarPerfil = authActionClient
   .action(async ({ parsedInput, ctx }) => {
     const { username, name, bio } = parsedInput;
     const userId = ctx.session.user.id;
+
+    if (usernameEstaReservado(username)) {
+      throw new Error("Esse @nome é reservado pelo Riff. Escolha outro.");
+    }
 
     const existingUser = await db.query.users.findFirst({
       where: and(

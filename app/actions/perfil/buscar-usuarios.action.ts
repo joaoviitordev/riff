@@ -4,7 +4,14 @@ import { z } from "zod";
 import { authActionClient } from "@/lib/safe-action";
 import { db } from "@/db";
 import { users } from "@/db/schema";
-import { and, isNull, ne, or, ilike } from "drizzle-orm";
+import { and, isNull, isNotNull, ne, or, ilike } from "drizzle-orm";
+
+type UsuarioComUsername = {
+  id: string;
+  username: string;
+  name: string | null;
+  avatarUrl: string | null;
+};
 
 const buscarUsuariosSchema = z.object({
   termo: z
@@ -32,11 +39,16 @@ export const buscarUsuarios = authActionClient
       .where(
         and(
           isNull(users.deletedAt),
+          isNotNull(users.username),
           ne(users.id, currentUserId),
           or(ilike(users.username, padrao), ilike(users.name, padrao))
         )
       )
       .limit(8);
 
-    return { usuarios: resultados };
+    const usuarios = resultados.filter(
+      (usuario): usuario is UsuarioComUsername => usuario.username !== null
+    );
+
+    return { usuarios };
   });
