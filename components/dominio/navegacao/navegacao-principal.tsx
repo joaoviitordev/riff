@@ -10,6 +10,7 @@ import {
   IconUser,
   IconLogin,
 } from "@tabler/icons-react";
+import MarcaRiff from "@/components/marca-riff";
 import ItemNavegacao from "./item-navegacao";
 
 interface UsuarioNavegacao {
@@ -106,13 +107,8 @@ export default function NavegacaoPrincipal({
         aria-label="Navegação principal"
         className="fixed inset-y-0 left-0 z-40 hidden w-60 flex-col gap-8 border-r border-border bg-[#131313] px-4 py-8 md:flex"
       >
-        <Link
-          href="/feed"
-          aria-label="Riff, ir para o início"
-          className="flex items-end px-4 text-3xl font-bold tracking-tighter text-white"
-        >
-          Riff
-          <span className="text-2xl leading-none text-riff-orange">.</span>
+        <Link href="/feed" aria-label="Riff, ir para o início" className="px-4">
+          <MarcaRiff className="text-3xl" />
         </Link>
 
         <div className="flex flex-col gap-2">
