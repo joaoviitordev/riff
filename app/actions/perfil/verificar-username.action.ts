@@ -5,6 +5,7 @@ import { authActionClient } from "@/lib/safe-action";
 import { db } from "@/db";
 import { users } from "@/db/schema";
 import { eq, and, isNull, ne } from "drizzle-orm";
+import { usernameEstaReservado } from "@/lib/usernames-reservados";
 
 const verificarUsernameSchema = z.object({
   username: z
@@ -20,6 +21,13 @@ export const verificarUsername = authActionClient
     const { username } = parsedInput;
     const currentUserId = ctx.session.user.id;
 
+    if (usernameEstaReservado(username)) {
+      return {
+        disponivel: false,
+        mensagem: "Esse @nome é reservado pelo Riff. Escolha outro.",
+      };
+    }
+
     // Procura por outro usuário que já tenha esse username (não excluído)
     const existingUser = await db.query.users.findFirst({
       where: and(
@@ -29,7 +37,15 @@ export const verificarUsername = authActionClient
       ),
     });
 
+    if (existingUser) {
+      return {
+        disponivel: false,
+        mensagem: "Este @nome já está sendo usado.",
+      };
+    }
+
     return {
-      disponivel: !existingUser,
+      disponivel: true,
+      mensagem: "Este @nome está disponível!",
     };
   });

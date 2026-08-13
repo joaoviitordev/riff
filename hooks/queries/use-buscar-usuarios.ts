@@ -3,7 +3,7 @@ import { buscarUsuarios } from "@/app/actions/perfil/buscar-usuarios.action";
 
 export interface UsuarioEncontrado {
   id: string;
-  username: string | null;
+  username: string;
   name: string | null;
   avatarUrl: string | null;
 }

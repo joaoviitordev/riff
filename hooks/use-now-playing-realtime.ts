@@ -12,6 +12,7 @@ export function useNowPlayingRealtime(username: string, userId: string) {
     }
 
     let active = true;
+    let polling: ReturnType<typeof setInterval> | null = null;
 
     const fetchNowPlaying = async () => {
       try {
@@ -69,16 +70,44 @@ export function useNowPlayingRealtime(username: string, userId: string) {
       )
       .subscribe();
 
+    const pararPolling = () => {
+      if (polling) {
+        clearInterval(polling);
+        polling = null;
+      }
+    };
+
     // Polling redundante a cada 30 segundos (conforme CLAUDE.md)
-    const polling = setInterval(fetchNowPlaying, 30000);
+    const iniciarPolling = () => {
+      pararPolling();
+      polling = setInterval(fetchNowPlaying, 30000);
+    };
+
+    // Aba oculta não consome quota da API do Spotify
+    const handleVisibilidade = () => {
+      if (document.hidden) {
+        pararPolling();
+        return;
+      }
+
+      fetchNowPlaying();
+      iniciarPolling();
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilidade);
 
     // Carregamento inicial
     fetchNowPlaying();
 
+    if (!document.hidden) {
+      iniciarPolling();
+    }
+
     return () => {
       active = false;
+      document.removeEventListener("visibilitychange", handleVisibilidade);
       supabase.removeChannel(canal);
-      clearInterval(polling);
+      pararPolling();
     };
   }, [username, userId]);
 

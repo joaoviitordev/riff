@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getSpotifyCurrentlyPlaying } from "@/lib/spotify";
+import { atualizarNowPlaying } from "@/lib/now-playing";
 import { aplicarRateLimit } from "@/lib/rate-limit";
 import { db } from "@/db";
-import { users, nowPlaying } from "@/db/schema";
+import { users } from "@/db/schema";
 import { eq, and, isNull } from "drizzle-orm";
 
 interface RouteProps {
@@ -34,57 +34,8 @@ export async function GET(request: NextRequest, { params }: RouteProps) {
   }
 
   try {
-    const currentlyPlaying = await getSpotifyCurrentlyPlaying(user.id);
-
-    if (currentlyPlaying && currentlyPlaying.item && currentlyPlaying.currently_playing_type === "track") {
-      const track = currentlyPlaying.item;
-      const artistNames = track.artists.map((a) => a.name).join(", ");
-      const albumArtUrl = track.album.images?.[0]?.url || null;
-
-      await db
-        .insert(nowPlaying)
-        .values({
-          userId: user.id,
-          trackId: track.id,
-          trackName: track.name,
-          artist: artistNames,
-          albumArt: albumArtUrl,
-          isPlaying: currentlyPlaying.is_playing,
-          updatedAt: new Date(),
-        })
-        .onConflictDoUpdate({
-          target: nowPlaying.userId,
-          set: {
-            trackId: track.id,
-            trackName: track.name,
-            artist: artistNames,
-            albumArt: albumArtUrl,
-            isPlaying: currentlyPlaying.is_playing,
-            updatedAt: new Date(),
-          },
-        });
-    } else {
-      await db
-        .insert(nowPlaying)
-        .values({
-          userId: user.id,
-          isPlaying: false,
-          updatedAt: new Date(),
-        })
-        .onConflictDoUpdate({
-          target: nowPlaying.userId,
-          set: {
-            isPlaying: false,
-            updatedAt: new Date(),
-          },
-        });
-    }
-
-    const currentNp = await db.query.nowPlaying.findFirst({
-      where: eq(nowPlaying.userId, user.id),
-    });
-
-    return NextResponse.json(currentNp || null);
+    const registro = await atualizarNowPlaying(user.id);
+    return NextResponse.json(registro);
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: "Erro ao atualizar status do player." }, { status: 500 });

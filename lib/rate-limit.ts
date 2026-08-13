@@ -1,11 +1,6 @@
 import { NextResponse } from "next/server";
 import { Ratelimit } from "@upstash/ratelimit";
-import { Redis } from "@upstash/redis";
-
-const url = process.env.UPSTASH_REDIS_REST_URL;
-const token = process.env.UPSTASH_REDIS_REST_TOKEN;
-
-const redis = url && token ? new Redis({ url, token }) : null;
+import { redis } from "@/lib/redis";
 
 if (!redis) {
   console.warn(
@@ -13,7 +8,7 @@ if (!redis) {
   );
 }
 
-type TipoLimite = "now-playing" | "metricas";
+type TipoLimite = "now-playing" | "metricas" | "feed";
 
 function criarLimitador(prefixo: string, limite: number): Ratelimit | null {
   if (!redis) return null;
@@ -27,6 +22,7 @@ function criarLimitador(prefixo: string, limite: number): Ratelimit | null {
 const limitadores: Record<TipoLimite, Ratelimit | null> = {
   "now-playing": criarLimitador("ratelimit:now-playing", 20),
   metricas: criarLimitador("ratelimit:metricas", 30),
+  feed: criarLimitador("ratelimit:feed", 20),
 };
 
 function extrairIp(request: Request): string {

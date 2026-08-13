@@ -9,8 +9,13 @@ export const proxy = withAuth(
     const isConfiguracoesPage = nextUrl.pathname.startsWith("/configuracoes");
     const isOnboardingPage = nextUrl.pathname.startsWith("/onboarding");
     const isLoginPage = nextUrl.pathname.startsWith("/login");
+    const isFeedPage = nextUrl.pathname.startsWith("/feed");
+    const isBuscarPage = nextUrl.pathname.startsWith("/buscar");
 
-    if (!isLoggedIn && (isConfiguracoesPage || isOnboardingPage)) {
+    if (
+      !isLoggedIn &&
+      (isConfiguracoesPage || isOnboardingPage || isFeedPage || isBuscarPage)
+    ) {
       return Response.redirect(new URL("/login", nextUrl));
     }
 

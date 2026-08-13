@@ -96,7 +96,7 @@ export default function OnboardingForm({ initialData }: OnboardingFormProps) {
     setIsSubmitting(true);
     try {
       if (availability && !availability.disponivel) {
-        toast.error("Esse @nome de usuário já está em uso. Tente outro.");
+        toast.error(availability.mensagem);
         setIsSubmitting(false);
         return;
       }
@@ -240,15 +240,15 @@ export default function OnboardingForm({ initialData }: OnboardingFormProps) {
                         Verificando disponibilidade...
                       </span>
                     ) : availability ? (
-                      availability.disponivel ? (
-                        <span className="text-xs text-emerald-500 font-medium">
-                          Este @nome está disponível!
-                        </span>
-                      ) : (
-                        <span className="text-xs text-destructive">
-                          Este @nome já está sendo usado.
-                        </span>
-                      )
+                      <span
+                        className={
+                          availability.disponivel
+                            ? "text-xs font-medium text-emerald-500"
+                            : "text-xs text-destructive"
+                        }
+                      >
+                        {availability.mensagem}
+                      </span>
                     ) : null}
                   </div>
                 )}
